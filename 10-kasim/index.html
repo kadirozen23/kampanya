@@ -52,6 +52,25 @@ h1 i{font-weight:400}
 .answer .event{font:500 clamp(30px,5.4vw,50px)/1.12 var(--serif);margin:0;text-wrap:balance;animation:rise .8s cubic-bezier(.2,.8,.2,1)}
 .answer .but{font:italic 400 clamp(26px,4.4vw,40px)/1.2 var(--serif);margin:14px 0 0;text-wrap:balance;animation:rise 1.2s .5s cubic-bezier(.2,.8,.2,1) both}
 .answer .more{margin:16px 0 0;color:var(--ash);max-width:56ch}
+.extras{display:flex;flex-direction:column;gap:12px;margin-top:22px;max-width:62ch}
+.xi{margin:0;font-size:17px;line-height:1.5;color:var(--stone)}
+.xi span{display:inline-block;font:600 11px var(--sans);letter-spacing:.14em;text-transform:uppercase;padding:3px 8px;margin-right:10px;border:1px solid var(--ash);color:var(--ash);vertical-align:2px}
+.xi.savas span{border-color:#8a6a3a;color:#c9a46a}
+.xi.saglik span{border-color:#5b6f73;color:#9fb6ba}
+.quote{margin:8px 0 0;padding:4px 0 4px 22px;border-left:2px solid var(--red)}
+.quote p{margin:0;font:italic 500 clamp(24px,3.8vw,34px)/1.25 var(--serif);text-wrap:balance}
+.quote cite{display:block;margin-top:8px;font:500 12px var(--sans);letter-spacing:.1em;text-transform:uppercase;color:var(--ash);font-style:normal}
+.lx{display:block;margin-top:6px;font-size:15px;color:var(--ash);line-height:1.45}
+.lx b{font:600 10px var(--sans);letter-spacing:.14em;text-transform:uppercase;margin-right:6px}
+.lx.savas b{color:#c9a46a}.lx.saglik b{color:#9fb6ba}
+.lx.soz{font-style:italic;color:var(--stone)}
+.lx.soz em{font-style:normal;font:500 11px var(--sans);letter-spacing:.08em;color:var(--ash);text-transform:uppercase}
+.wars{margin-top:34px}
+.wl{display:block;font:600 12px var(--sans);letter-spacing:.16em;text-transform:uppercase;color:var(--ash);margin-bottom:10px}
+.wc{display:flex;flex-wrap:wrap;gap:8px}
+.wc button{background:none;border:1px solid var(--line);color:var(--stone);font:600 14px var(--sans);padding:9px 12px;cursor:pointer;display:inline-flex;gap:8px;align-items:baseline;transition:border-color .2s}
+.wc button:hover{border-color:var(--stone)}
+.wc small{font:500 11px var(--sans);color:var(--ash)}
 @keyframes rise{from{opacity:0;transform:translateY(10px)}}
 
 .life{position:relative;margin:10px 0 8px;padding-top:34px}
@@ -111,6 +130,7 @@ h1 i{font-weight:400}
     <p class="event" id="ev"></p>
     <p class="but" id="but" hidden></p>
     <p class="more" id="more"></p>
+    <div class="extras" id="extras"></div>
   </section>
 
   <div class="life" aria-hidden="true">
@@ -126,9 +146,10 @@ h1 i{font-weight:400}
   <div class="toast" id="toast" aria-live="polite"></div>
   <div class="count" id="count" hidden></div>
 
+  <div class="wars"><span class="wl">Katıldığı savaşlar</span><div class="wc" id="wars"></div></div>
   <div class="list" id="list"></div>
 
-  <p class="src">Yaşlar doğum yılı 1881 esas alınarak verilmiştir; tam doğum günü bilinmediği için bir yaş fark olabilir. * işaretli yılların kesin tarihi kaynaklarda yoktur, yaklaşıktır. Tarihler: <a href="https://halic.edu.tr/en/research/application-and-research-centers/ataturk-principles-and-history-of-turkish-revolution-application-and-research-center/about-ataturk/ataturk-chronology" target="_blank" rel="noopener">Haliç Üniversitesi Atatürk İlkeleri ve İnkılap Tarihi Merkezi kronolojisi</a>, <a href="https://meb.gov.tr/ataturk/Hayati/CocuklukYillari" target="_blank" rel="noopener">MEB Atatürk'ün Çocukluk Yılları</a>. Bu sayfada alıntı söz yer almaz; yalnız olaylar ve tarihler vardır.</p>
+  <p class="src">Yaşlar doğum yılı 1881 esas alınarak verilmiştir; tam doğum günü bilinmediği için bir yaş fark olabilir. * işaretli yılların kesin tarihi kaynaklarda yoktur, yaklaşıktır. Tarihler: <a href="https://halic.edu.tr/en/research/application-and-research-centers/ataturk-principles-and-history-of-turkish-revolution-application-and-research-center/about-ataturk/ataturk-chronology" target="_blank" rel="noopener">Haliç Üniversitesi Atatürk İlkeleri ve İnkılap Tarihi Merkezi kronolojisi</a>, <a href="https://meb.gov.tr/ataturk/Hayati/CocuklukYillari" target="_blank" rel="noopener">MEB Atatürk'ün Çocukluk Yılları</a>. Sözler yalnız kaynağı belli olanlardan seçildi ve yanlarında nerede, ne zaman söylendiği yazıyor. Savaş ve sağlık bilgileri: <a href="https://meb.gov.tr/ataturk/Hayati/AskeriHayati" target="_blank" rel="noopener">MEB Atatürk'ün Askerî Hayatı</a>.</p>
 </div>
 
 <div id="silence" hidden role="dialog" aria-modal="true" aria-label="Saygı duruşu">
@@ -206,6 +227,28 @@ const EV=[
  [1937,"Çiftliklerini Hazine'ye, taşınmazlarını Ankara Belediyesi'ne bağışladı."],
  [1938,"10 Kasım'da, saat 09:05'te Dolmabahçe'de hayata gözlerini yumdu."]
 ];
+// Ek bilgiler: savaş, sağlık, söz. Kaynaklar: MEB "Atatürk'ün Askerî Hayatı", Haliç Üniv. kronolojisi, Nutuk ve Söylev ve Demeçler
+const EXTRA={
+ 1896:[["saglik","Manastır'da sıtmaya yakalandı; hastalık ömrü boyunca zaman zaman tekrarladı."]],
+ 1911:[["savas","Trablusgarp Savaşı: İtalyan saldırısı üzerine 15 Ekim'de Trablusgarp'a gitti, Tobruk ve Derne'de gönüllü yerel kuvvetleri yönetti."]],
+ 1912:[["savas","Derne Komutanı oldu. Ekim'de dönüp Balkan Savaşı'nda Gelibolu'da, Bolayır Kolordusu Kurmay Başkanı olarak görev aldı."],["saglik","Ocak 1912'de Tobruk'taki çarpışmada sol gözünden yaralandı."]],
+ 1913:[["savas","Balkan Savaşı: Dimetoka ve Edirne'nin geri alınmasında görev yaptı."]],
+ 1915:[["savas","Çanakkale Savaşı: 19. Tümen Komutanı olarak Arıburnu ve Conkbayırı'nda, Anafartalar Grubu Komutanı olarak Anafartalar'da savaştı."],["saglik","Conkbayırı'nda kalbine gelen bir parça, cebindeki saate çarparak hayatını kurtardı."],["soz","Ben size taarruz emretmiyorum, ölmeyi emrediyorum!","Arıburnu, 25 Nisan 1915, 57. Alay'a"]],
+ 1916:[["savas","Kafkas Cephesi: 8 Ağustos'ta Muş ve Bitlis'i Ruslardan geri aldı; yıl sonunda 2. Ordu komutanlığına vekâlet etti."]],
+ 1917:[["savas","Muş'u ikinci kez kurtardı; Suriye-Filistin Cephesi'nde Halep'teki 7. Ordu'nun komutanı oldu."]],
+ 1918:[["saglik","13 Mayıs – 4 Ağustos arasında Viyana ve Karlsbad'da tedavi gördü."],["savas","7. Ordu'nun başına dönüp İngilizlere karşı savunma muharebeleri yaptı, orduyu düzenli biçimde Halep'e çekti."]],
+ 1919:[["soz","Milletin istiklalini yine milletin azim ve kararı kurtaracaktır.","Amasya Genelgesi, 22 Haziran 1919"]],
+ 1921:[["saglik","12 Ağustos'ta, Sakarya Savaşı'ndan hemen önce attan düşerek kaburga kemiği kırıldı; buna rağmen savaşı cepheden yönetti."],["savas","Kurtuluş Savaşı: Başkomutan olarak Sakarya Meydan Muharebesi'ni 22 gün 22 gece yönetti."],["soz","Hattı müdafaa yoktur, sathı müdafaa vardır. O satıh, bütün vatandır.","Sakarya Savaşı, 1921 (Nutuk)"]],
+ 1922:[["savas","Kurtuluş Savaşı: Büyük Taarruz ve Başkomutanlık Meydan Muharebesi; 9 Eylül'de İzmir kurtarıldı."],["soz","Ordular! İlk hedefiniz Akdeniz'dir. İleri!","1 Eylül 1922"]],
+ 1924:[["soz","Hayatta en hakiki mürşit ilimdir.","Samsun, 22 Eylül 1924"]],
+ 1927:[["soz","Ey Türk gençliği! Birinci vazifen, Türk istiklalini, Türk Cumhuriyetini ilelebet muhafaza ve müdafaa etmektir.","Gençliğe Hitabe, Nutuk, 20 Ekim 1927"]],
+ 1931:[["soz","Yurtta sulh, cihanda sulh.","1931"]],
+ 1933:[["soz","Ne mutlu Türküm diyene!","Onuncu Yıl Nutku, 29 Ekim 1933"]],
+ 1936:[["saglik","Kasım'da zatürre geçirdi."]],
+ 1938:[["saglik","Yılın başında Yalova'da karaciğer hastalığı (siroz) teşhis edildi. 31 Mart'ta hastalığı resmî olarak duyuruldu, 15 Eylül'de vasiyetini yazdı, Ekim'de durumu ağırlaştı."]]
+};
+const WARS=[["Trablusgarp",1911],["Balkan Savaşları",1912],["Çanakkale",1915],["Kafkas Cephesi",1916],["Suriye-Filistin",1917],["Kurtuluş Savaşı",1921]];
+const KLBL={savas:"Savaş",saglik:"Sağlık",soz:"Söz"};
 const $=id=>document.getElementById(id);
 const ageOf=y=>y-BORN;
 const NOWY=new Date().getFullYear();
@@ -228,12 +271,16 @@ function render(){
   $("lead").textContent=lead;$("yr").textContent=yr;
   const evEl=$("ev");evEl.textContent=ev;evEl.style.animation="none";void evEl.offsetWidth;evEl.style.animation="";
   $("more").textContent=more;
+  const ex=(p.e&&EXTRA[p.e[0]])||[];
+  $("extras").innerHTML=ex.map(([k,t,src])=>k==="soz"?`<blockquote class="quote"><p>“${t}”</p><cite>${src}</cite></blockquote>`:`<p class="xi ${k}"><span>${KLBL[k]}</span>${t}</p>`).join("");
   const butEl=$("but");butEl.hidden=p.kind!=="beyond";butEl.textContent=BUT;butEl.style.animation="none";void butEl.offsetWidth;butEl.style.animation="";
   const pct=Math.min(100,age/57*100);$("fill").style.width=pct+"%";$("you").style.left=pct+"%";$("you").textContent=age>57?`SEN ${age}`:`SEN · ${age}`;
   const groups=[];EV.forEach(e=>{const g=groups[groups.length-1];if(g&&g.t===e[1])g.to=e;else groups.push({from:e,to:e,t:e[1]})});
   $("list").innerHTML=groups.map(gr=>{const a1=ageOf(gr.from[0]),a2=ageOf(gr.to[0]);const inR=age>=a1&&age<=a2;
     const cls=gr.from[0]===DIED?"last":inR?"cur":a2<age?"past":"";const ages=a1===a2?a1:`${a1}–${a2}`;const yrs=a1===a2?gr.from[0]:`${gr.from[0]}–${gr.to[0]}`;
-    return `<div class="row ${cls}"><span class="a">${ages}</span><span class="y">${yrs}${gr.from[2]?"*":""}</span><span class="t">${gr.t}</span></div>`}).join("");
+    const ex=a1===a2?(EXTRA[gr.from[0]]||[]):[];
+    const exh=ex.map(([k,t,src])=>k==="soz"?`<span class="lx soz">“${t}”<em> ${src}</em></span>`:`<span class="lx ${k}"><b>${KLBL[k]}</b> ${t}</span>`).join("");
+    return `<div class="row ${cls}" id="y${gr.from[0]}"><span class="a">${ages}</span><span class="y">${yrs}${gr.from[2]?"*":""}</span><span class="t">${gr.t}${exh}</span></div>`}).join("");
   current={age,p,lead,ev,yr,more};
 }
 let current=null;
@@ -250,6 +297,11 @@ function drawCard(){
   let y=700;if(c.yr){g.font="500 30px Archivo";g.fillText(String(c.yr),100,y);y+=90}
   g.fillStyle="#e9e4da";let fs=80,lines;do{g.font=`500 ${fs}px 'EB Garamond'`;lines=wrap(g,c.ev,W-200);fs-=4}while(lines.length*fs*1.18>760&&fs>40);
   lines.forEach((l,i)=>g.fillText(l,100,y+i*fs*1.18));
+  const q=c.p.e&&(EXTRA[c.p.e[0]]||[]).find(x=>x[0]==="soz");
+  if(q&&c.p.kind!=="beyond"){let yy=y+lines.length*fs*1.18+60;g.fillStyle="#b3262d";g.fillRect(100,yy-50,4,10);
+    g.fillStyle="#e9e4da";let qf=60,ql;do{g.font=`italic 500 ${qf}px 'EB Garamond'`;ql=wrap(g,"“"+q[1]+"”",W-230);qf-=4}while(ql.length*qf*1.2>460&&qf>34);
+    const top=yy-qf*0.9;ql.forEach(l=>{g.fillText(l,130,yy);yy+=qf*1.2});g.fillStyle="#b3262d";g.fillRect(100,top,4,yy-top-qf*0.6);
+    g.fillStyle="#8f8a82";g.font="500 26px Archivo";g.fillText(q[2].toLocaleUpperCase('tr-TR'),130,yy+10)}
   if(c.p.kind==="beyond"){let yy=y+lines.length*fs*1.18+40;g.fillStyle="#e9e4da";g.font="italic 400 66px 'EB Garamond'";wrap(g,BUT,W-200).forEach(l=>{g.fillText(l,100,yy);yy+=80});
     if(c.more){yy+=30;g.fillStyle="#8f8a82";g.font="400 46px 'EB Garamond'";wrap(g,c.more,W-200).forEach(l=>{g.fillText(l,100,yy);yy+=60})}}
   // hayat çizgisi
@@ -295,6 +347,9 @@ async function loadCount(){try{const r=await fetch(API+"?tur=sayac",{cache:"no-s
 function countStand(){try{fetch(API,{method:"POST",mode:"no-cors",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify({tur:"durdum"})}).then(()=>setTimeout(loadCount,1500)).catch(()=>{})}catch(e){}}
 loadCount();
 
+$("wars").innerHTML=WARS.map(([n,y])=>`<button type="button" data-y="${y}">${n}<small>${y-BORN} yaş</small></button>`).join("");
+$("wars").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;const y=+b.dataset.y;$("age").value=y-BORN;render();
+  document.querySelector(".answer").scrollIntoView({behavior:"smooth",block:"start"})});
 render();
 document.fonts&&Promise.all(["500 96px 'EB Garamond'","italic 400 64px 'EB Garamond'","500 30px Archivo"].map(f=>document.fonts.load(f))).catch(()=>{});
 </script>
