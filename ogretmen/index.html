@@ -1,0 +1,243 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Öğretmenine Karne Ver</title>
+<meta name="description" content="Bu sefer karneyi sen veriyorsun. Öğretmenine Sabır, Emek, Kalp notlarını ver, karnesini WhatsApp'tan gönder. 24 Kasım Öğretmenler Günü.">
+<meta property="og:title" content="Öğretmenine karne ver">
+<meta property="og:description" content="Bu sefer karneyi sen veriyorsun. 24 Kasım Öğretmenler Günü.">
+<meta property="og:image" content="https://kadirozen23.github.io/kampanya/ogretmen/og.jpg">
+<meta property="og:url" content="https://kadirozen23.github.io/kampanya/ogretmen/">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preload" href="../fonts/archivo.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="../fonts/caveat.woff2" as="font" type="font/woff2" crossorigin>
+<style>
+@font-face{font-family:"Archivo";src:url(../fonts/archivo.woff2) format("woff2");font-weight:100 900;font-stretch:62% 125%;font-display:swap}
+@font-face{font-family:"Caveat";src:url(../fonts/caveat.woff2) format("woff2");font-weight:400 700;font-display:swap}
+@font-face{font-family:"Courier Prime";src:url(../fonts/courier-regular.woff2) format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:"Courier Prime";src:url(../fonts/courier-bold.woff2) format("woff2");font-weight:700;font-display:swap}
+/* Layout: two-column workbench — the karne is the hero and updates live; the form sits beside it like a teacher's grade book. One light look on purpose. */
+:root{
+  --paper:#f6f4ef;      /* school hallway white */
+  --ink:#16213a;        /* fountain-pen navy */
+  --muted:#5d6577;
+  --rule:#d9d5cb;
+  --red:#d2283a;        /* red pen / Takdir stamp */
+  --field:#ffffff;
+  --ui:"Archivo",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --typed:"Courier Prime","Courier New",ui-monospace,monospace;
+  --hand:"Caveat","Comic Sans MS",cursive;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+html{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.5 var(--ui);
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 56px}
+.wrap{max-width:1120px;margin:0 auto}
+header{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;padding-block:20px;font:600 12px var(--ui);letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+header .date b{color:var(--red)}
+h1{font:800 clamp(40px,7.4vw,88px)/.92 var(--ui);font-stretch:72%;letter-spacing:-.01em;text-transform:uppercase;margin:6px 0 12px;text-wrap:balance}
+h1 span{color:var(--red);position:relative;display:inline-block}
+h1 span::after{content:"";position:absolute;left:-4%;right:-4%;bottom:.06em;height:.09em;background:var(--red);transform:rotate(-1.5deg);transform-origin:left;animation:stroke .9s .3s cubic-bezier(.6,0,.2,1) both}
+@keyframes stroke{from{transform:rotate(-1.5deg) scaleX(0)}}
+.lede{max-width:56ch;color:var(--muted);margin:0 0 28px;font-size:18px}
+
+.bench{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:36px;align-items:start}
+@media (max-width:880px){.bench{grid-template-columns:1fr;gap:24px}}
+.stage{position:sticky;top:16px}
+@media (max-width:880px){.stage{position:static}}
+.stage canvas{display:block;width:100%;max-width:100%;height:auto;aspect-ratio:4/5;border-radius:6px;box-shadow:0 1px 0 rgba(0,0,0,.04),0 18px 40px -18px rgba(22,33,58,.35);transform:rotate(-.6deg);transition:transform .4s cubic-bezier(.2,.8,.2,1)}
+.stage canvas:hover{transform:rotate(0)}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+.btn{appearance:none;border:0;border-radius:10px;padding:13px 18px;font:700 15px var(--ui);cursor:pointer;display:inline-flex;align-items:center;gap:8px;text-decoration:none}
+.btn.primary{background:var(--red);color:#fff}
+.btn.wa{background:#1f8f4e;color:#fff}
+.btn.ghost{background:none;border:1.5px solid var(--ink);color:var(--ink)}
+.btn:focus-visible,input:focus-visible,textarea:focus-visible,.grade button:focus-visible{outline:3px solid var(--ink);outline-offset:2px}
+.toast{min-height:1.4em;margin-top:8px;font-size:14px;color:var(--muted)}
+
+form{display:flex;flex-direction:column;gap:22px}
+fieldset{border:0;margin:0;padding:0;display:flex;flex-direction:column;gap:14px}
+legend{font:800 13px var(--ui);letter-spacing:.14em;text-transform:uppercase;color:var(--red);margin-bottom:10px;padding:0}
+.row{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:12px}
+@media (max-width:480px){.row{grid-template-columns:1fr}}
+label{display:flex;flex-direction:column;gap:6px;font:600 13px var(--ui);color:var(--muted)}
+input,textarea{font:400 17px var(--typed);color:var(--ink);background:var(--field);border:1.5px solid var(--rule);border-radius:8px;padding:11px 12px;width:100%}
+textarea{resize:vertical;min-height:84px;font-family:var(--hand);font-size:22px;line-height:1.25}
+.count{align-self:flex-end;font:500 12px var(--ui);color:var(--muted)}
+.grades{display:flex;flex-direction:column;border-top:1.5px solid var(--ink)}
+.grade{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--rule)}
+.grade .lbl{font:600 16px var(--ui)}
+.grade .lbl small{display:block;font:400 13px var(--ui);color:var(--muted)}
+.grade .seg{display:flex;gap:4px}
+.grade button{width:38px;height:38px;border-radius:8px;border:1.5px solid var(--rule);background:var(--field);font:700 16px var(--typed);color:var(--ink);cursor:pointer;transition:background .15s,border-color .15s,transform .15s}
+.grade button:hover{border-color:var(--ink)}
+.grade button[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:#fff;transform:translateY(-1px)}
+.papers{display:flex;gap:10px}
+.papers button{width:44px;height:44px;border-radius:50%;border:2px solid var(--rule);cursor:pointer}
+.papers button[aria-pressed="true"]{border-color:var(--ink);box-shadow:0 0 0 3px var(--paper),0 0 0 5px var(--ink)}
+footer{margin-top:48px;padding-top:16px;border-top:1px solid var(--rule);font-size:13px;color:var(--muted);display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header><span>24 Kasım · Öğretmenler Günü</span><span class="date" id="countdown"></span></header>
+  <h1>Bu sefer karneyi <span>sen</span> veriyorsun.</h1>
+  <p class="lede">Yıllarca senin karneni dolduran öğretmenine şimdi sen not ver. Karnesini hazırla, ona WhatsApp'tan gönder.</p>
+
+  <div class="bench">
+    <div class="stage">
+      <canvas id="card" width="1080" height="1350" aria-label="Öğretmen karnesi önizlemesi"></canvas>
+      <div class="actions">
+        <button class="btn primary" id="share" type="button">Karneyi paylaş</button>
+        <button class="btn ghost" id="save" type="button">Görseli kaydet</button>
+        <a class="btn wa" id="wa" href="#" target="_blank" rel="noopener">WhatsApp'ta gönder</a>
+      </div>
+      <div class="toast" id="toast" aria-live="polite"></div>
+    </div>
+
+    <form id="f" autocomplete="off">
+      <fieldset>
+        <legend>Öğretmenin</legend>
+        <label for="tName">Adı soyadı<input id="tName" maxlength="32" value="Ayşe Yılmaz"></label>
+        <div class="row">
+          <label for="tLesson">Dersi<input id="tLesson" maxlength="24" value="Türkçe"></label>
+          <label for="tYear">Öğrencisi olduğun yıl<input id="tYear" maxlength="12" value="1998" inputmode="numeric"></label>
+        </div>
+        <label for="tSchool">Okulu (isteğe bağlı)<input id="tSchool" maxlength="40" value="Atatürk İlkokulu"></label>
+      </fieldset>
+
+      <fieldset>
+        <legend>Notları</legend>
+        <div class="grades" id="grades"></div>
+      </fieldset>
+
+      <fieldset>
+        <legend>Senin notun</legend>
+        <label for="msg">Ona söylemek istediğin tek cümle<textarea id="msg" maxlength="120">Okumayı sevdiren sizdiniz. Hâlâ her kitapta sesinizi duyuyorum.</textarea></label>
+        <span class="count" id="msgCount"></span>
+        <div class="row">
+          <label for="sName">Senin adın<input id="sName" maxlength="24" value="Kadir"></label>
+          <div>
+            <div style="font:600 13px var(--ui);color:var(--muted);margin-bottom:6px">Karne rengi</div>
+            <div class="papers" id="papers"></div>
+          </div>
+        </div>
+      </fieldset>
+    </form>
+  </div>
+
+  <footer><span>Bu karne resmi bir belge değildir, öğrencisinin teşekkürüdür.</span><span>#ÖğretmeninekarneVer · #24Kasım</span></footer>
+</div>
+
+<script>
+const SITE="kadirozen23.github.io/kampanya/ogretmen";
+const CATS=[["Sabır","Aynı soruyu kaçıncı kez sorsak da"],["Anlatım","En zor konuyu bile anlaşılır yaptı"],["Emek","Hafta sonu bile kâğıt okudu"],["Mizah","Sınıfı güldürmeyi bilirdi"],["Kalp","Bizi her şeyden önce insan olarak gördü"]];
+const WORD={5:"Pekiyi",4:"İyi",3:"Orta",2:"Geçer",1:"Geçmez"};
+const PAPERS=[{id:"mavi",bg:"#e6eef5",line:"#6f93b8",band:"#2f5d8c"},{id:"yesil",bg:"#e8f1e6",line:"#79a27a",band:"#2f6b3d"},{id:"pembe",bg:"#f6e8ea",line:"#c48a95",band:"#9b3348"}];
+let st={grades:[5,5,5,5,5],paper:0};
+const $=id=>document.getElementById(id);
+
+// grade buttons
+CATS.forEach(([n,s],i)=>{
+  const r=document.createElement("div");r.className="grade";
+  r.innerHTML=`<div class="lbl">${n}<small>${s}</small></div><div class="seg" role="group" aria-label="${n} notu"></div>`;
+  const seg=r.querySelector(".seg");
+  [1,2,3,4,5].forEach(v=>{const b=document.createElement("button");b.type="button";b.textContent=v;b.setAttribute("aria-label",`${n}: ${v} (${WORD[v]})`);b.setAttribute("aria-pressed",st.grades[i]===v);
+    b.onclick=()=>{st.grades[i]=v;seg.querySelectorAll("button").forEach(x=>x.setAttribute("aria-pressed",x===b));draw()};seg.appendChild(b)});
+  $("grades").appendChild(r);
+});
+PAPERS.forEach((p,i)=>{const b=document.createElement("button");b.type="button";b.style.background=p.bg;b.setAttribute("aria-label",`Karne rengi ${p.id}`);b.setAttribute("aria-pressed",i===0);
+  b.onclick=()=>{st.paper=i;document.querySelectorAll("#papers button").forEach((x,j)=>x.setAttribute("aria-pressed",j===i));draw()};$("papers").appendChild(b)});
+
+const cv=$("card"),g=cv.getContext("2d"),W=1080,H=1350;
+const val=id=>$(id).value.trim();
+function wrap(text,maxW,font){g.font=font;const words=text.split(/\s+/);const lines=[];let line="";
+  for(const w of words){const t=line?line+" "+w:w;if(g.measureText(t).width>maxW&&line){lines.push(line);line=w}else line=t}
+  if(line)lines.push(line);return lines}
+function fit(text,maxW,size,weight,fam){let s=size;do{g.font=`${weight} ${s}px ${fam}`;s-=2}while(g.measureText(text).width>maxW&&s>14);return g.font}
+
+function guilloche(p){
+  g.save();g.globalAlpha=.22;g.strokeStyle=p.line;g.lineWidth=1.2;
+  const cx=W/2,cy=H*.56;
+  for(let k=0;k<36;k++){g.beginPath();
+    for(let t=0;t<=Math.PI*2+.01;t+=.02){const R=300+38*Math.sin(7*t+k*.35)+18*Math.cos(13*t);const a=t+k*Math.PI/36;
+      const x=cx+R*Math.cos(a),y=cy+R*.82*Math.sin(a);t?g.lineTo(x,y):g.moveTo(x,y)}
+    g.stroke()}
+  g.globalAlpha=.35;
+  for(let k=0;k<6;k++){g.beginPath();for(let x=0;x<=W;x+=4){const y=34+k*3+6*Math.sin(x/22+k);x?g.lineTo(x,y):g.moveTo(x,y)}g.stroke();
+    g.beginPath();for(let x=0;x<=W;x+=4){const y=H-34-k*3+6*Math.sin(x/22+k);x?g.lineTo(x,y):g.moveTo(x,y)}g.stroke()}
+  g.restore();
+}
+function draw(){
+  const p=PAPERS[st.paper],INK="#16213a",RED="#d2283a";
+  g.fillStyle=p.bg;g.fillRect(0,0,W,H);guilloche(p);
+  // frame
+  g.strokeStyle=p.band;g.lineWidth=3;g.strokeRect(46,74,W-92,H-148);g.lineWidth=1;g.strokeRect(56,84,W-112,H-168);
+  // header
+  g.fillStyle=INK;g.textAlign="center";
+  g.font="800 64px Archivo";g.save();g.translate(W/2,170);g.scale(.82,1);g.fillText("ÖĞRETMEN KARNESİ",0,0);g.restore();
+  g.font="600 22px Archivo";g.fillStyle=p.band;g.fillText("24 KASIM ÖĞRETMENLER GÜNÜ · ÖĞRENCİSİ TARAFINDAN VERİLMİŞTİR",W/2,212);
+  // info block
+  g.textAlign="left";const L=96,R=W-96;let y=270;
+  const info=[["Adı Soyadı",val("tName")||"—"],["Dersi",val("tLesson")||"—"],["Okulu",val("tSchool")||"—"],["Öğrencisi olduğum yıl",val("tYear")||"—"]];
+  info.forEach(([k,v])=>{g.font="600 20px Archivo";g.fillStyle=p.band;g.fillText(k.toUpperCase(),L,y);
+    g.font=fit(v,R-L-300,34,700,"'Courier Prime'");g.fillStyle=INK;g.fillText(v,L+300,y+2);
+    g.strokeStyle=p.line;g.globalAlpha=.6;g.beginPath();g.moveTo(L+300,y+14);g.lineTo(R,y+14);g.stroke();g.globalAlpha=1;y+=58});
+  // table
+  y+=24;const cols=[L,L+420,L+560,R];
+  g.fillStyle=p.band;g.fillRect(L,y,R-L,48);g.fillStyle="#fff";g.font="700 20px Archivo";
+  g.fillText("DAVRANIŞ",L+18,y+31);g.fillText("NOTU",cols[1]+18,y+31);g.fillText("DERECESİ",cols[2]+18,y+31);
+  y+=48;
+  CATS.forEach(([n],i)=>{const v=st.grades[i];g.fillStyle=i%2?"rgba(255,255,255,.35)":"rgba(255,255,255,.6)";g.fillRect(L,y,R-L,56);
+    g.fillStyle=INK;g.font="600 26px Archivo";g.fillText(n,L+18,y+37);
+    g.font="700 32px 'Courier Prime'";g.fillStyle=v<3?RED:INK;g.fillText(String(v),cols[1]+30,y+38);
+    g.font="700 26px 'Courier Prime'";g.fillText(WORD[v],cols[2]+18,y+37);y+=56});
+  g.strokeStyle=p.band;g.lineWidth=2;g.strokeRect(L,y-56*5-48,R-L,56*5+48);
+  [cols[1],cols[2]].forEach(x=>{g.beginPath();g.moveTo(x,y-56*5-48);g.lineTo(x,y);g.stroke()});
+  // average
+  const avg=st.grades.reduce((a,b)=>a+b,0)/5;y+=46;
+  g.fillStyle=INK;g.font="600 22px Archivo";g.fillText("ORTALAMA",L,y);
+  g.font="700 44px 'Courier Prime'";g.fillText(avg.toFixed(2).replace(".",","),L+150,y+6);
+  // stamp
+  const award=avg>=4.5?"TAKDİR":avg>=3.5?"TEŞEKKÜR":null;
+  if(award){g.save();g.translate(R-160,y+10);g.rotate(-.16);g.strokeStyle=RED;g.fillStyle=RED;g.globalAlpha=.86;
+    g.lineWidth=5;g.beginPath();g.ellipse(0,0,140,62,0,0,Math.PI*2);g.stroke();g.lineWidth=2;g.beginPath();g.ellipse(0,0,128,52,0,0,Math.PI*2);g.stroke();
+    g.textAlign="center";g.font="800 40px Archivo";g.fillText(award,0,6);g.font="700 18px Archivo";g.fillText("BELGESİ",0,32);g.restore()}
+  // message
+  y+=60;g.fillStyle="rgba(255,255,255,.55)";g.fillRect(L,y,R-L,250);g.strokeStyle=p.line;g.lineWidth=1.5;g.strokeRect(L,y,R-L,250);
+  g.fillStyle=p.band;g.font="600 20px Archivo";g.fillText("ÖĞRENCİSİNİN NOTU",L+20,y+38);
+  const msg=val("msg")||"Her şey için teşekkürler.";
+  const lines=wrap(msg,R-L-48,"700 44px Caveat").slice(0,3);g.fillStyle=INK;g.font="700 44px Caveat";
+  lines.forEach((ln,i)=>g.fillText(ln,L+24,y+92+i*48));
+  const sn=val("sName");if(sn){g.textAlign="right";g.font="700 40px Caveat";g.fillText("— "+sn,R-24,y+232);g.textAlign="left"}
+  // footer
+  g.textAlign="center";g.fillStyle=p.band;g.font="600 20px Archivo";g.fillText(SITE,W/2,H-108);
+  g.textAlign="left";
+  $("msgCount").textContent=`${$("msg").value.length}/120`;
+  updateWA(avg,award);
+}
+function shareText(){const t=val("tName")||"öğretmenim";return `${t}, bu sefer karneyi ben verdim 📒 Öğretmenler Gününüz kutlu olsun!\n\nSen de öğretmenine karne ver: https://${SITE}/`}
+function updateWA(){$("wa").href="https://wa.me/?text="+encodeURIComponent(shareText())}
+const toast=t=>{$("toast").textContent=t};
+function blob(){return new Promise(r=>cv.toBlob(r,"image/png"))}
+const fname=()=>`ogretmen-karnesi-${(val("tName")||"ogretmenim").toLowerCase().replace(/[^a-z0-9çğıöşü]+/g,"-")}.png`;
+$("save").onclick=async()=>{const b=await blob();const a=document.createElement("a");a.href=URL.createObjectURL(b);a.download=fname();document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),4000);toast("Görsel kaydedildi. WhatsApp'ta resim olarak gönderebilirsin.")};
+$("share").onclick=async()=>{
+  try{const b=await blob();const file=new File([b],fname(),{type:"image/png"});
+    if(navigator.canShare&&navigator.canShare({files:[file]})){await navigator.share({files:[file],text:shareText()});toast("Paylaşıldı.");return}
+  }catch(e){if(e&&e.name==="AbortError")return}
+  $("save").click();toast("Bu tarayıcı doğrudan paylaşmayı desteklemiyor, görseli kaydettim. Şimdi WhatsApp'ta resim olarak gönderebilirsin.");
+};
+$("f").addEventListener("input",draw);$("f").addEventListener("submit",e=>e.preventDefault());
+function countdown(){const t=new Date(),d=new Date(2026,10,24),days=Math.ceil((d-new Date(t.getFullYear(),t.getMonth(),t.getDate()))/864e5);
+  $("countdown").innerHTML=days>0?`<b>${days} gün</b> kaldı`:days===0?"<b>Bugün</b>":"Öğretmenlerimize teşekkürler"}
+countdown();draw();
+Promise.all(["800 64px Archivo","600 20px Archivo","700 32px 'Courier Prime'","700 44px Caveat"].map(f=>document.fonts.load(f))).then(draw).catch(draw);
+document.fonts.ready.then(draw);
+</script>
+</body>
+</html>
