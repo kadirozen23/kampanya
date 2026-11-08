@@ -50,6 +50,7 @@ h1 i{font-weight:400}
 .answer .lead{font:italic 400 clamp(22px,3.4vw,28px)/1.35 var(--serif);color:var(--ash);margin:0 0 10px}
 .answer .year{font:500 13px var(--sans);letter-spacing:.2em;color:var(--ash);margin:0 0 8px}
 .answer .event{font:500 clamp(30px,5.4vw,50px)/1.12 var(--serif);margin:0;text-wrap:balance;animation:rise .8s cubic-bezier(.2,.8,.2,1)}
+.answer .but{font:italic 400 clamp(26px,4.4vw,40px)/1.2 var(--serif);margin:14px 0 0;text-wrap:balance;animation:rise 1.2s .5s cubic-bezier(.2,.8,.2,1) both}
 .answer .more{margin:16px 0 0;color:var(--ash);max-width:56ch}
 @keyframes rise{from{opacity:0;transform:translateY(10px)}}
 
@@ -108,6 +109,7 @@ h1 i{font-weight:400}
     <p class="lead" id="lead"></p>
     <p class="year" id="yr"></p>
     <p class="event" id="ev"></p>
+    <p class="but" id="but" hidden></p>
     <p class="more" id="more"></p>
   </section>
 
@@ -142,6 +144,7 @@ h1 i{font-weight:400}
 const SITE="kadirozen23.github.io/kampanya/10-kasim";
 const API="https://script.google.com/macros/s/AKfycbwHnpafOwXKEsBaEQYmw-VnT4jmJXFeOzU0jYqUNGhLXa9N3mMP-oN98eo4JBHzlRo/exec";
 const BORN=1881, DIED=1938;
+const BUT="Göremedi ama yaşayamadığı her yılı bize bıraktı.";
 // [yıl, olay, yaklaşık?] — kaynaklar: Haliç Üniv. Atatürk İlkeleri ve İnkılap Tarihi Merkezi kronolojisi; MEB "Atatürk'ün Çocukluk Yılları"; 3 Nisan 1930 Belediye Kanunu (bianet)
 const EV=[
  [1881,"Selanik'te doğdu. Annesi Zübeyde Hanım, babası Ali Rıza Efendi."],
@@ -225,6 +228,7 @@ function render(){
   $("lead").textContent=lead;$("yr").textContent=yr;
   const evEl=$("ev");evEl.textContent=ev;evEl.style.animation="none";void evEl.offsetWidth;evEl.style.animation="";
   $("more").textContent=more;
+  const butEl=$("but");butEl.hidden=p.kind!=="beyond";butEl.textContent=BUT;butEl.style.animation="none";void butEl.offsetWidth;butEl.style.animation="";
   const pct=Math.min(100,age/57*100);$("fill").style.width=pct+"%";$("you").style.left=pct+"%";$("you").textContent=age>57?`SEN ${age}`:`SEN · ${age}`;
   const groups=[];EV.forEach(e=>{const g=groups[groups.length-1];if(g&&g.t===e[1])g.to=e;else groups.push({from:e,to:e,t:e[1]})});
   $("list").innerHTML=groups.map(gr=>{const a1=ageOf(gr.from[0]),a2=ageOf(gr.to[0]);const inR=age>=a1&&age<=a2;
@@ -246,7 +250,8 @@ function drawCard(){
   let y=700;if(c.yr){g.font="500 30px Archivo";g.fillText(String(c.yr),100,y);y+=90}
   g.fillStyle="#e9e4da";let fs=80,lines;do{g.font=`500 ${fs}px 'EB Garamond'`;lines=wrap(g,c.ev,W-200);fs-=4}while(lines.length*fs*1.18>760&&fs>40);
   lines.forEach((l,i)=>g.fillText(l,100,y+i*fs*1.18));
-  if(c.p.kind==="beyond"&&c.more){g.fillStyle="#8f8a82";g.font="400 50px 'EB Garamond'";wrap(g,c.more,W-200).forEach((l,i)=>g.fillText(l,100,y+lines.length*fs*1.18+50+i*64))}
+  if(c.p.kind==="beyond"){let yy=y+lines.length*fs*1.18+40;g.fillStyle="#e9e4da";g.font="italic 400 66px 'EB Garamond'";wrap(g,BUT,W-200).forEach(l=>{g.fillText(l,100,yy);yy+=80});
+    if(c.more){yy+=30;g.fillStyle="#8f8a82";g.font="400 46px 'EB Garamond'";wrap(g,c.more,W-200).forEach(l=>{g.fillText(l,100,yy);yy+=60})}}
   // hayat çizgisi
   const ly=H-420;g.fillStyle="#2a2826";g.fillRect(100,ly,W-200,3);g.fillStyle="#e9e4da";g.fillRect(100,ly,(W-200)*Math.min(1,c.age/57),3);
   g.fillStyle="#8f8a82";g.font="500 28px Archivo";g.fillText("1881",100,ly+60);g.fillStyle="#b3262d";g.textAlign="right";g.fillText("10 Kasım 1938 · 09:05",W-100,ly+60);g.textAlign="left";
