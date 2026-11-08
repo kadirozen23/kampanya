@@ -33,8 +33,12 @@ function temiz_(s, n) {
   return String(s || '').replace(/[\u0000-\u001f<>]/g, ' ').replace(/\s+/g, ' ').trim().slice(0, n);
 }
 
-// Duvar: yalnız onaylı cümleler
-function doGet() {
+// Duvar: yalnız onaylı cümleler (?tur=sayac → 10 Kasım saygı duruşu sayısı)
+function doGet(e) {
+  if (e && e.parameter && e.parameter.tur === 'sayac') {
+    const n = Number(PropertiesService.getScriptProperties().getProperty('DURDUM') || 0);
+    return ContentService.createTextOutput(JSON.stringify({ sayi: n })).setMimeType(ContentService.MimeType.JSON);
+  }
   const rows = tablo_().getDataRange().getValues().slice(1);
   const onayli = rows
     .filter(r => String(r[5]).toLowerCase().trim() === 'evet')
@@ -49,6 +53,12 @@ function doGet() {
 function doPost(e) {
   let p = {};
   try { p = JSON.parse(e.postData.contents); } catch (err) { p = e.parameter || {}; }
+  if (p.tur === 'durdum') {
+    const l = LockService.getScriptLock(); l.waitLock(10000);
+    try { const pr = PropertiesService.getScriptProperties(); pr.setProperty('DURDUM', String(Number(pr.getProperty('DURDUM') || 0) + 1)); }
+    finally { l.releaseLock(); }
+    return ContentService.createTextOutput(JSON.stringify({ ok: true })).setMimeType(ContentService.MimeType.JSON);
+  }
   const c = temiz_(p.c, AZAMI);
   if (c.length < 4 || p.hp || [c, p.d, p.a].some(uygunsuzMu)) {
     return ContentService.createTextOutput(JSON.stringify({ ok: false })).setMimeType(ContentService.MimeType.JSON);

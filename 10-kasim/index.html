@@ -1,0 +1,266 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>O Senin Yaşındayken</title>
+<meta name="description" content="Yaşını yaz, Mustafa Kemal'in o yaşta ne yaptığını gör. 10 Kasım 1938, 09:05. Ölümünün 88. yılında saygıyla.">
+<meta property="og:title" content="O senin yaşındayken">
+<meta property="og:description" content="Yaşını yaz, Mustafa Kemal'in o yaşta ne yaptığını gör. 10 Kasım · 09:05">
+<meta property="og:image" content="https://kadirozen23.github.io/kampanya/10-kasim/og.jpg">
+<meta property="og:url" content="https://kadirozen23.github.io/kampanya/10-kasim/">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#0d0d0e">
+<link rel="preload" href="../fonts/garamond.woff2" as="font" type="font/woff2" crossorigin>
+<style>
+@font-face{font-family:"EB Garamond";src:url(../fonts/garamond.woff2) format("woff2");font-weight:400 800;font-display:swap}
+@font-face{font-family:"EB Garamond";src:url(../fonts/garamond-italic.woff2) format("woff2");font-weight:400 800;font-style:italic;font-display:swap}
+@font-face{font-family:"Archivo";src:url(../fonts/archivo.woff2) format("woff2");font-weight:100 900;font-stretch:62% 125%;font-display:swap}
+/* Layout: a quiet memorial page. One question, one answer set in large serif, then the whole 57-year life as a single line with the reader's age marked on it. Deliberately single dark look. */
+:root{
+  --night:#0d0d0e;
+  --stone:#e9e4da;       /* Anıtkabir travertine */
+  --ash:#8f8a82;
+  --line:#2a2826;
+  --red:#b3262d;         /* used once: the 09:05 mark */
+  --serif:"EB Garamond",Georgia,"Times New Roman",serif;
+  --sans:"Archivo",system-ui,-apple-system,"Segoe UI",sans-serif;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+body{margin:0;background:var(--night);color:var(--stone);font:17px/1.6 var(--serif);
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 64px}
+.wrap{max-width:860px;margin:0 auto}
+header{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;padding-block:22px;font:500 12px var(--sans);letter-spacing:.18em;text-transform:uppercase;color:var(--ash)}
+header b{color:var(--stone);font-weight:600}
+.hero{padding-block:clamp(28px,7vw,72px) 26px;border-bottom:1px solid var(--line)}
+.years{font:400 14px var(--sans);letter-spacing:.3em;color:var(--ash);margin:0 0 18px}
+h1{font:500 clamp(46px,9vw,92px)/.98 var(--serif);letter-spacing:-.01em;margin:0 0 22px;text-wrap:balance}
+h1 i{font-weight:400}
+.ask{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;font-size:clamp(22px,3.6vw,30px)}
+.ask input{width:3.2ch;font:500 clamp(44px,8vw,72px)/1 var(--serif);color:var(--stone);background:none;border:0;border-bottom:1px solid var(--ash);text-align:center;padding:0 0 4px;-moz-appearance:textfield}
+.ask input::-webkit-outer-spin-button,.ask input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+.ask input:focus{outline:none;border-bottom-color:var(--stone)}
+:focus-visible{outline:2px solid var(--stone);outline-offset:3px}
+
+.answer{padding-block:38px 30px;min-height:240px}
+.answer .lead{font:italic 400 clamp(22px,3.4vw,28px)/1.35 var(--serif);color:var(--ash);margin:0 0 10px}
+.answer .year{font:500 13px var(--sans);letter-spacing:.2em;color:var(--ash);margin:0 0 8px}
+.answer .event{font:500 clamp(30px,5.4vw,50px)/1.12 var(--serif);margin:0;text-wrap:balance;animation:rise .8s cubic-bezier(.2,.8,.2,1)}
+.answer .more{margin:16px 0 0;color:var(--ash);max-width:56ch}
+@keyframes rise{from{opacity:0;transform:translateY(10px)}}
+
+.life{position:relative;margin:10px 0 8px;padding-top:34px}
+.life .bar{position:relative;height:2px;background:var(--line)}
+.life .fill{position:absolute;left:0;top:0;height:2px;background:var(--stone);transition:width .8s cubic-bezier(.2,.8,.2,1)}
+.life .you{position:absolute;top:-30px;transform:translateX(-50%);font:600 12px var(--sans);letter-spacing:.12em;color:var(--stone);white-space:nowrap;transition:left .8s cubic-bezier(.2,.8,.2,1)}
+.life .you::after{content:"";position:absolute;left:50%;top:22px;width:1px;height:16px;background:var(--stone)}
+.life .ends{display:flex;justify-content:space-between;font:500 12px var(--sans);color:var(--ash);margin-top:10px;letter-spacing:.08em}
+.life .ends .end{color:var(--red)}
+
+.list{margin-top:34px;border-top:1px solid var(--line)}
+.row{display:grid;grid-template-columns:64px 74px minmax(0,1fr);gap:14px;padding:14px 0;border-bottom:1px solid var(--line);align-items:baseline;transition:background .3s}
+.row .a{font:500 28px/1 var(--serif);font-variant-numeric:lining-nums tabular-nums}
+.row .y{font:500 13px var(--sans);color:var(--ash);letter-spacing:.08em}
+.row .t{min-width:0}
+.row.cur{background:rgba(233,228,218,.06)}
+.row.cur .a{color:var(--stone)}
+.row.past .a,.row.past .t{color:var(--ash)}
+.row.last .a{color:var(--red)}
+@media (max-width:520px){.row{grid-template-columns:48px minmax(0,1fr)}.row .y{grid-column:2;grid-row:1}.row .t{grid-column:2}.row .a{grid-row:span 2;font-size:24px}}
+
+.acts{display:flex;gap:10px;flex-wrap:wrap;margin:26px 0 6px}
+.btn{border:1px solid var(--stone);background:none;color:var(--stone);font:600 15px var(--sans);padding:12px 18px;border-radius:2px;cursor:pointer;text-decoration:none}
+.btn.solid{background:var(--stone);color:var(--night)}
+.toast{min-height:1.4em;font:14px var(--sans);color:var(--ash)}
+.count{font:14px var(--sans);color:var(--ash);margin-top:6px}
+.src{margin-top:40px;font:13px/1.6 var(--sans);color:var(--ash)}
+.src a{color:var(--stone)}
+
+/* 09:05 */
+#silence{position:fixed;inset:0;z-index:50;background:#000;color:var(--stone);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:24px;opacity:0;transition:opacity 2.4s}
+#silence.on{opacity:1}
+#silence .clock{font:500 clamp(72px,18vw,180px)/1 var(--serif);font-variant-numeric:lining-nums tabular-nums;letter-spacing:.02em}
+#silence .clock b{color:var(--red);font-weight:500}
+#silence p{font:italic 400 clamp(20px,3.4vw,28px)/1.4 var(--serif);color:var(--ash);margin:18px 0 0}
+#silence .sec{font:500 14px var(--sans);letter-spacing:.3em;color:var(--ash);margin-top:28px}
+#silence button{margin-top:34px}
+#pre{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--night);border-bottom:1px solid var(--line);font:500 13px var(--sans);letter-spacing:.06em;color:var(--ash);padding:10px 0;text-align:center}
+#pre b{color:var(--stone)}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div id="pre" hidden></div>
+<div class="wrap">
+  <header><span>10 Kasım · 09:05</span><span><b id="nth">88.</b> yıl</span></header>
+
+  <section class="hero">
+    <p class="years">1881 — 1938</p>
+    <h1>O senin <i>yaşındayken</i></h1>
+    <label class="ask" for="age"><span>Ben</span><input id="age" type="number" min="1" max="110" value="38" inputmode="numeric" aria-label="Yaşın"><span>yaşındayım.</span></label>
+  </section>
+
+  <section class="answer" aria-live="polite">
+    <p class="lead" id="lead"></p>
+    <p class="year" id="yr"></p>
+    <p class="event" id="ev"></p>
+    <p class="more" id="more"></p>
+  </section>
+
+  <div class="life" aria-hidden="true">
+    <div class="bar"><div class="fill" id="fill"></div><div class="you" id="you">SEN</div></div>
+    <div class="ends"><span>1881 · Selanik</span><span class="end">10 Kasım 1938 · 09:05</span></div>
+  </div>
+
+  <div class="acts">
+    <button class="btn solid" id="share" type="button">Paylaş</button>
+    <button class="btn" id="save" type="button">Görseli kaydet</button>
+    <button class="btn" id="stand" type="button">Bir dakikalık saygı duruşu</button>
+  </div>
+  <div class="toast" id="toast" aria-live="polite"></div>
+  <div class="count" id="count" hidden></div>
+
+  <div class="list" id="list"></div>
+
+  <p class="src">Yaşlar doğum yılı 1881 esas alınarak verilmiştir; tam doğum günü bilinmediği için bir yaş fark olabilir. Tarihler: <a href="https://halic.edu.tr/en/research/application-and-research-centers/ataturk-principles-and-history-of-turkish-revolution-application-and-research-center/about-ataturk/ataturk-chronology" target="_blank" rel="noopener">Haliç Üniversitesi Atatürk İlkeleri ve İnkılap Tarihi Merkezi kronolojisi</a>. Bu sayfada alıntı söz yer almaz; yalnız olaylar ve tarihler vardır.</p>
+</div>
+
+<div id="silence" hidden role="dialog" aria-modal="true" aria-label="Saygı duruşu">
+  <div class="clock">09<b>:</b>05</div>
+  <p>Saygıyla anıyoruz.</p>
+  <div class="sec" id="sec">60</div>
+  <button class="btn" id="end" type="button">Kapat</button>
+</div>
+
+<canvas id="card" width="1080" height="1920" hidden></canvas>
+
+<script>
+const SITE="kadirozen23.github.io/kampanya/10-kasim";
+const API="https://script.google.com/macros/s/AKfycbwHnpafOwXKEsBaEQYmw-VnT4jmJXFeOzU0jYqUNGhLXa9N3mMP-oN98eo4JBHzlRo/exec";
+const BORN=1881, DIED=1938;
+// [yıl, olay] — kaynak: Haliç Üniv. Atatürk İlkeleri ve İnkılap Tarihi Merkezi kronolojisi; 5 Aralık 1934 kadın hakları TBMM kararı
+const EV=[
+ [1893,"Askerî Rüştiye'ye girdi ve Kemal adını aldı."],
+ [1895,"Manastır Askerî İdadisi'ne geçti."],
+ [1899,"İstanbul'da Harbiye'ye, Piyade Sınıfı'na girdi."],
+ [1902,"Harp Akademisi'ne başladı, arkadaşlarıyla bir gazete çıkardı."],
+ [1905,"Harp Akademisi'ni Kurmay Yüzbaşı olarak bitirip Şam'a atandı."],
+ [1906,"Şam'da Vatan ve Hürriyet Cemiyeti'ni kurdu."],
+ [1908,"Meşrutiyet'in ilanına giden çalışmalarda yer aldı."],
+ [1912,"Trablusgarp Savaşı'nda Tobruk saldırısını yönetti."],
+ [1913,"Sofya'ya Askerî Ataşe olarak atandı."],
+ [1915,"Çanakkale'de Arıburnu ve Anafartalar'da düşmanı durdurdu."],
+ [1916,"Tuğgeneral oldu; Bitlis ve Muş'u kurtardı."],
+ [1918,"Halep'in kuzeyinde, bugünkü sınırlar boyunca düşman ilerleyişini durdurdu."],
+ [1919,"19 Mayıs'ta Samsun'a çıktı; Erzurum ve Sivas kongrelerini topladı."],
+ [1920,"23 Nisan'da Ankara'da Türkiye Büyük Millet Meclisi'ni açtı."],
+ [1921,"Sakarya Meydan Muharebesi'ni kazandı; Mareşal rütbesi ve Gazi unvanı verildi."],
+ [1922,"Kocatepe'den Büyük Taarruz'u yönetti; saltanat kaldırıldı."],
+ [1923,"Lozan Antlaşması imzalandı; 29 Ekim'de Cumhuriyet ilan edildi ve ilk Cumhurbaşkanı seçildi."],
+ [1924,"Halifelik kaldırıldı, öğretim birleştirildi."],
+ [1925,"Uluslararası takvim ve saat kabul edildi."],
+ [1926,"Türk Medeni Kanunu kabul edildi."],
+ [1927,"Büyük Nutuk'u okudu."],
+ [1928,"Yeni Türk harflerini Sarayburnu'nda anlattı; Harf Devrimi yasalaştı."],
+ [1931,"Türk Tarih Kurumu'nu kurdu."],
+ [1932,"Türk Dil Kurumu'nu kurdu."],
+ [1933,"Cumhuriyet'in 10. yıl nutkunu okudu."],
+ [1934,"Meclis ona Atatürk soyadını verdi; kadınlara milletvekili seçme ve seçilme hakkı tanındı."],
+ [1937,"Çiftliklerini Hazine'ye, taşınmazlarını Ankara Belediyesi'ne bağışladı."],
+ [1938,"10 Kasım'da, saat 09:05'te Dolmabahçe'de hayata gözlerini yumdu."]
+];
+const $=id=>document.getElementById(id);
+const ageOf=y=>y-BORN;
+const NOWY=new Date().getFullYear();
+$("nth").textContent=(NOWY-DIED)+".";
+
+function pick(age){
+  const exact=EV.find(e=>ageOf(e[0])===age);
+  if(exact)return{e:exact,kind:"exact"};
+  if(age<ageOf(EV[0][0]))return{e:null,kind:"child"};
+  if(age>57)return{e:null,kind:"beyond"};
+  let best=EV[0];EV.forEach(e=>{if(e[0]===DIED)return;const d=Math.abs(ageOf(e[0])-age),bd=Math.abs(ageOf(best[0])-age);if(d<bd||(d===bd&&ageOf(e[0])<age))best=e});
+  return{e:best,kind:"near"};
+}
+function render(){
+  let age=parseInt($("age").value,10);if(!(age>=1))age=1;if(age>110)age=110;
+  const p=pick(age);let lead,yr="",ev,more="";
+  if(p.kind==="exact"){lead=`O ${age} yaşındayken,`;yr=p.e[0];ev=p.e[1]}
+  else if(p.kind==="near"){lead=`Senin yaşına en yakın yıl: o ${ageOf(p.e[0])} yaşındayken,`;yr=p.e[0];ev=p.e[1]}
+  else if(p.kind==="child"){lead=`O ${age} yaşındayken,`;yr=`${BORN+age}`;ev="Selanik'te bir çocuktu.";more=`12 yaşında Askerî Rüştiye'ye girecek ve Kemal adını alacaktı.`}
+  else{lead=`Sen ${age} yaşındasın.`;ev="O, bu yaşı hiç göremedi.";more=`57 yaşında, 10 Kasım 1938'de 09:05'te aramızdan ayrıldı. Kurduğu Cumhuriyet bu yıl ${NOWY-1923} yaşında.`}
+  $("lead").textContent=lead;$("yr").textContent=yr;
+  const evEl=$("ev");evEl.textContent=ev;evEl.style.animation="none";void evEl.offsetWidth;evEl.style.animation="";
+  $("more").textContent=more;
+  const pct=Math.min(100,age/57*100);$("fill").style.width=pct+"%";$("you").style.left=pct+"%";$("you").textContent=age>57?`SEN ${age}`:`SEN · ${age}`;
+  $("list").innerHTML=EV.map(e=>{const a=ageOf(e[0]);const cls=e[0]===DIED?"last":a===age?"cur":a<age?"past":"";
+    return `<div class="row ${cls}"><span class="a">${a}</span><span class="y">${e[0]}</span><span class="t">${e[1]}</span></div>`}).join("");
+  current={age,p,lead,ev,yr,more};
+}
+let current=null;
+$("age").addEventListener("input",render);
+
+// paylaşım kartı
+function wrap(g,t,max){const w=t.split(/\s+/),out=[];let l="";for(const x of w){const s=l?l+" "+x:x;if(g.measureText(s).width>max&&l){out.push(l);l=x}else l=s}if(l)out.push(l);return out}
+function drawCard(){
+  const cv=$("card"),g=cv.getContext("2d"),W=1080,H=1920,c=current;
+  g.fillStyle="#0d0d0e";g.fillRect(0,0,W,H);
+  g.fillStyle="#8f8a82";g.font="500 30px Archivo";g.fillText("1881 — 1938",100,200);
+  g.fillStyle="#e9e4da";g.font="500 96px 'EB Garamond'";g.fillText(`Ben ${c.age} yaşındayım.`,100,420);
+  g.fillStyle="#8f8a82";let lf=60;do{g.font=`italic 400 ${lf}px 'EB Garamond'`;lf-=2}while(g.measureText(c.lead).width>W-200&&lf>30);g.fillText(c.lead,100,560);
+  let y=700;if(c.yr){g.font="500 30px Archivo";g.fillText(String(c.yr),100,y);y+=90}
+  g.fillStyle="#e9e4da";let fs=80,lines;do{g.font=`500 ${fs}px 'EB Garamond'`;lines=wrap(g,c.ev,W-200);fs-=4}while(lines.length*fs*1.18>760&&fs>40);
+  lines.forEach((l,i)=>g.fillText(l,100,y+i*fs*1.18));
+  if(c.p.kind==="beyond"&&c.more){g.fillStyle="#8f8a82";g.font="400 50px 'EB Garamond'";wrap(g,c.more,W-200).forEach((l,i)=>g.fillText(l,100,y+lines.length*fs*1.18+50+i*64))}
+  // hayat çizgisi
+  const ly=H-420;g.fillStyle="#2a2826";g.fillRect(100,ly,W-200,3);g.fillStyle="#e9e4da";g.fillRect(100,ly,(W-200)*Math.min(1,c.age/57),3);
+  g.fillStyle="#8f8a82";g.font="500 28px Archivo";g.fillText("1881",100,ly+60);g.fillStyle="#b3262d";g.textAlign="right";g.fillText("10 Kasım 1938 · 09:05",W-100,ly+60);g.textAlign="left";
+  g.fillStyle="#e9e4da";g.font="italic 400 58px 'EB Garamond'";g.fillText("O senin yaşındayken…",100,H-220);
+  g.fillStyle="#8f8a82";g.font="500 30px Archivo";g.fillText(SITE,100,H-160);
+}
+const toast=t=>{$("toast").textContent=t};
+const blob=()=>{drawCard();return new Promise(r=>$("card").toBlob(r,"image/png"))};
+$("save").onclick=async()=>{const b=await blob();const a=document.createElement("a");a.href=URL.createObjectURL(b);a.download=`o-senin-yasindayken-${current.age}.png`;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),4000);toast("Görsel kaydedildi.")};
+$("share").onclick=async()=>{try{const b=await blob();const f=new File([b],"o-senin-yasindayken.png",{type:"image/png"});
+  if(navigator.canShare&&navigator.canShare({files:[f]})){await navigator.share({files:[f],text:`O senin yaşındayken… https://${SITE}/`});return}}catch(e){if(e&&e.name==="AbortError")return}
+  $("save").click()};
+
+// saygı duruşu
+let sTimer=null;
+function silence(auto){
+  const s=$("silence");s.hidden=false;requestAnimationFrame(()=>s.classList.add("on"));
+  let left=60;$("sec").textContent=left;clearInterval(sTimer);
+  sTimer=setInterval(()=>{left--;$("sec").textContent=left>0?left:"";if(left<=0){clearInterval(sTimer);$("sec").textContent="";}},1000);
+  $("end").focus({preventScroll:true});
+  if(!auto)countStand();
+}
+$("stand").onclick=()=>silence(false);
+$("end").onclick=()=>{clearInterval(sTimer);const s=$("silence");s.classList.remove("on");setTimeout(()=>s.hidden=true,600)};
+document.addEventListener("keydown",e=>{if(e.key==="Escape"&&!$("silence").hidden)$("end").click()});
+function isNov10(d){return d.getMonth()===10&&d.getDate()===10}
+let autoDone=false;
+function tick(){
+  const d=new Date();
+  if(isNov10(d)){
+    const t=d.getHours()*60+d.getMinutes();
+    if(t<9*60+5){const m=9*60+5-t-1,s=59-d.getSeconds();$("pre").hidden=false;$("pre").innerHTML=`Saygı duruşuna <b>${m>0?m+" dk ":""}${s} sn</b> kaldı`}
+    else $("pre").hidden=true;
+    if(!autoDone&&d.getHours()===9&&d.getMinutes()===5){autoDone=true;silence(true)}
+  }
+}
+setInterval(tick,1000);tick();
+
+// isteğe bağlı sayaç: servis destekliyorsa görünür
+async function loadCount(){try{const r=await fetch(API+"?tur=sayac",{cache:"no-store"});const j=await r.json();if(typeof j.sayi==="number"){$("count").hidden=false;$("count").textContent=`${j.sayi.toLocaleString("tr-TR")} kişi bu sayfada saygı duruşunda bulundu.`}}catch(e){}}
+function countStand(){try{fetch(API,{method:"POST",mode:"no-cors",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify({tur:"durdum"})}).then(()=>setTimeout(loadCount,1500)).catch(()=>{})}catch(e){}}
+loadCount();
+
+render();
+document.fonts&&Promise.all(["500 96px 'EB Garamond'","italic 400 64px 'EB Garamond'","500 30px Archivo"].map(f=>document.fonts.load(f))).catch(()=>{});
+</script>
+</body>
+</html>
