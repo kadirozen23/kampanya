@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>O Cümle</title>
+<meta name="description" content="Bir öğretmeninin söylediği ve hiç unutmadığın o cümle neydi? Yaz, binlerce cümlenin aktığı duvara ekle. 24 Kasım Öğretmenler Günü.">
+<meta property="og:title" content="Hayatını değiştiren o cümle neydi?">
+<meta property="og:description" content="Öğretmeninin sana söylediği, hiç unutmadığın cümleyi yaz. 24 Kasım Öğretmenler Günü.">
+<meta property="og:image" content="https://kadirozen23.github.io/kampanya/o-cumle/og.jpg">
+<meta property="og:url" content="https://kadirozen23.github.io/kampanya/o-cumle/">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preload" href="../fonts/caveat.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="../fonts/archivo.woff2" as="font" type="font/woff2" crossorigin>
+<style>
+@font-face{font-family:"Archivo";src:url(../fonts/archivo.woff2) format("woff2");font-weight:100 900;font-stretch:62% 125%;font-display:swap}
+@font-face{font-family:"Caveat";src:url(../fonts/caveat.woff2) format("woff2");font-weight:400 700;font-display:swap}
+/* Layout: a notebook page. Composer sits in the margin column on wide screens; the wall is ruled paper where approved sentences drift upward in handwriting. One light look on purpose. */
+:root{
+  --page:#fbfaf6;        /* notebook paper */
+  --rule:#cfdcec;        /* faint blue ruling */
+  --margin:#e7838c;      /* red margin line */
+  --ink:#1d2a5c;         /* ballpoint blue */
+  --pencil:#5a5f69;
+  --red:#c4313f;
+  --ui:"Archivo",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --hand:"Caveat","Comic Sans MS",cursive;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+body{margin:0;background:var(--page);color:var(--ink);font:16px/1.5 var(--ui);
+  background-image:repeating-linear-gradient(to bottom,transparent 0 35px,var(--rule) 35px 36px);
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 48px}
+body::before{content:"";position:fixed;top:0;bottom:0;left:max(52px,calc(50% - 560px));width:2px;background:var(--margin);opacity:.55;pointer-events:none}
+@media (max-width:700px){body::before{left:28px}}
+.wrap{max-width:1120px;margin:0 auto;position:relative}
+header{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;padding-block:20px 0;font:600 12px var(--ui);letter-spacing:.14em;text-transform:uppercase;color:var(--pencil);padding-left:56px}
+@media (max-width:700px){header{padding-left:24px}}
+header b{color:var(--red)}
+.grid{display:grid;grid-template-columns:minmax(0,380px) minmax(0,1fr);gap:48px;padding-left:56px;margin-top:22px}
+@media (max-width:900px){.grid{grid-template-columns:1fr;gap:28px}}
+@media (max-width:700px){.grid{padding-left:24px}}
+h1{font:800 clamp(38px,6vw,64px)/.98 var(--ui);font-stretch:85%;letter-spacing:-.02em;margin:0 0 14px;color:#141a2e;text-wrap:balance}
+h1 .hand{font:700 1.25em/0.8 var(--hand);color:var(--red);font-stretch:100%;letter-spacing:0;display:inline-block;transform:rotate(-3deg)}
+.lede{color:var(--pencil);margin:0 0 22px;max-width:40ch}
+form{display:flex;flex-direction:column;gap:12px}
+textarea,input{width:100%;font:500 17px var(--ui);color:var(--ink);background:rgba(255,255,255,.85);border:1.5px solid #c9cfdb;border-radius:10px;padding:11px 12px}
+textarea{font:700 28px/1.15 var(--hand);min-height:132px;resize:vertical}
+textarea::placeholder{color:#9aa1ae}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+.cnt{align-self:flex-end;font-size:12px;color:var(--pencil);margin-top:-6px}
+.btn{border:0;border-radius:12px;background:var(--ink);color:#fff;font:700 17px var(--ui);padding:15px 18px;cursor:pointer;transition:transform .2s,background .2s}
+.btn:hover{transform:translateY(-2px)}
+.btn:disabled{opacity:.6;cursor:default;transform:none}
+.btn.alt{background:none;color:var(--ink);border:1.5px solid var(--ink)}
+:focus-visible{outline:3px solid var(--red);outline-offset:2px}
+.msg{min-height:1.4em;font-size:14px;color:var(--pencil)}
+.done{display:none;flex-direction:column;gap:12px}
+.done.on{display:flex}
+.done canvas{width:100%;max-width:300px;aspect-ratio:9/16;height:auto;border-radius:10px;box-shadow:0 16px 36px -18px rgba(29,42,92,.45)}
+.done .acts{display:flex;gap:8px;flex-wrap:wrap}
+.more{margin-top:26px;padding-top:16px;border-top:1px dashed #c9cfdb;font-size:14px;color:var(--pencil);display:flex;flex-direction:column;gap:6px}
+.more a{color:var(--ink);font-weight:600}
+
+.wallhead{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap;margin-bottom:8px}
+.wallhead h2{font:700 13px var(--ui);letter-spacing:.14em;text-transform:uppercase;color:var(--pencil);margin:0}
+.wallhead span{font:600 13px var(--ui);color:var(--pencil);font-variant-numeric:tabular-nums}
+.viewport{position:relative;height:min(78vh,820px);overflow:hidden;-webkit-mask-image:linear-gradient(transparent,#000 8%,#000 90%,transparent);mask-image:linear-gradient(transparent,#000 8%,#000 90%,transparent)}
+.track{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:30px 34px;padding-block:20px;animation:drift var(--dur,90s) linear infinite}
+@media (max-width:600px){.track{grid-template-columns:1fr}}
+.viewport:hover .track,.viewport:focus-within .track{animation-play-state:paused}
+@keyframes drift{from{transform:translateY(0)}to{transform:translateY(-50%)}}
+.note{margin:0;transform:rotate(var(--r));min-width:0}
+.note q{display:block;font:700 clamp(27px,3vw,34px)/1.12 var(--hand);color:var(--c);quotes:"“" "”"}
+.note figcaption{margin-top:6px;font:500 13px var(--ui);color:var(--pencil)}
+.empty{display:flex;flex-direction:column;justify-content:center;height:100%;padding:24px;gap:10px}
+.empty p{margin:0}
+.empty .big{font:700 44px/1.05 var(--hand);color:var(--ink);transform:rotate(-2deg)}
+.empty .sm{color:var(--pencil);max-width:40ch}
+footer{margin-top:40px;padding-left:56px;font-size:13px;color:var(--pencil)}
+@media (max-width:700px){footer{padding-left:24px}}
+@media (prefers-reduced-motion:reduce){.track{animation:none}.viewport{overflow-y:auto}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header><span>24 Kasım · Öğretmenler Günü</span><span id="cd"></span></header>
+  <div class="grid">
+    <section>
+      <h1>Hayatını değiştiren <span class="hand">o cümle</span> neydi?</h1>
+      <p class="lede">Bir öğretmenin bir gün bir şey söyledi ve sen onu hiç unutmadın. Yaz, duvara ekle.</p>
+
+      <form id="f" autocomplete="off" novalidate>
+        <label class="hp" aria-hidden="true">Boş bırak<input id="hp" tabindex="-1"></label>
+        <label for="c" class="hp">O cümle</label>
+        <textarea id="c" maxlength="240" required placeholder="Örnek: “Sen yazmalısın, bunu bırakma.”"></textarea>
+        <div class="cnt" id="cnt">0/240</div>
+        <div class="row">
+          <input id="d" maxlength="40" placeholder="Hangi dersin öğretmeni?" aria-label="Ders">
+          <input id="y" maxlength="10" placeholder="Hangi yıl?" inputmode="numeric" aria-label="Yıl">
+        </div>
+        <input id="a" maxlength="30" placeholder="Adın (isteğe bağlı)" aria-label="Adın">
+        <button class="btn" id="send" type="submit">Duvara ekle</button>
+        <div class="msg" id="msg" aria-live="polite"></div>
+      </form>
+
+      <div class="done" id="done">
+        <p class="msg" style="color:var(--ink);font-weight:600">Cümlen alındı. Kontrol edildikten sonra duvarda görünecek. Bu arada kendi kartını paylaşabilirsin:</p>
+        <canvas id="card" width="1080" height="1920" aria-label="Senin cümlenin kartı"></canvas>
+        <div class="acts">
+          <button class="btn" id="share" type="button">Paylaş</button>
+          <button class="btn alt" id="save" type="button">Görseli kaydet</button>
+          <button class="btn alt" id="again" type="button">Bir cümle daha</button>
+        </div>
+      </div>
+
+      <div class="more">
+        <span>Öğretmen misin? <a href="../dokundun/">Kaç hayata dokunduğunu gör</a></span>
+        <span>Öğretmenine teşekkür et: <a href="../ogretmen/">Ona karne ver</a></span>
+      </div>
+    </section>
+
+    <section aria-labelledby="wh">
+      <div class="wallhead"><h2 id="wh">Duvardaki cümleler</h2><span id="total"></span></div>
+      <div class="viewport" id="vp" tabindex="0" aria-label="Cümle duvarı, üzerine gelince durur">
+        <div class="empty" id="empty">
+          <p class="big">İlk cümle senin olsun.</p>
+          <p class="sm">Duvar yeni açıldı. Yazdığın cümle kısa bir kontrolden sonra burada, el yazısıyla akmaya başlayacak.</p>
+        </div>
+        <div class="track" id="track" hidden></div>
+      </div>
+    </section>
+  </div>
+  <footer>Cümleler yayına girmeden önce tek tek okunur. Kişisel bilgi, isim ya da kırıcı ifade içeren cümleler yayınlanmaz.</footer>
+</div>
+
+<script>
+const API="https://script.google.com/macros/s/AKfycbwHnpafOwXKEsBaEQYmw-VnT4jmJXFeOzU0jYqUNGhLXa9N3mMP-oN98eo4JBHzlRo/exec";
+const SITE="kadirozen23.github.io/kampanya/o-cumle";
+const INKS=["#1d2a5c","#1d2a5c","#c4313f","#2c3e9e","#4a4f58"];
+const $=id=>document.getElementById(id);
+const esc=s=>String(s??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]));
+const strip=s=>String(s||"").replace(/^[\s"“”«»']+|[\s"“”«»']+$/g,"");
+
+function render(items){
+  if(!items.length){$("empty").hidden=false;$("track").hidden=true;return}
+  $("empty").hidden=true;const tr=$("track");tr.hidden=false;
+  const one=items.map((it,i)=>{const meta=[it.d&&`${esc(it.d)} öğretmeni`,it.y&&esc(it.y),it.a&&esc(it.a)].filter(Boolean).join(" · ");
+    const r=(((i*37)%9)-4)*.35, c=INKS[i%INKS.length];
+    return `<figure class="note" style="--r:${r}deg;--c:${c}"><q>${esc(strip(it.c))}</q>${meta?`<figcaption>${meta}</figcaption>`:""}</figure>`}).join("");
+  const loop=items.length>=8;tr.innerHTML=loop?one+one:one; // az cümlede akış yok
+  tr.style.animation=loop?"":"none";$("vp").style.overflowY=loop?"hidden":"auto";
+  tr.style.setProperty("--dur",Math.max(40,items.length*7)+"s");
+  $("total").textContent=`${items.length.toLocaleString("tr-TR")} cümle`;
+}
+async function load(){
+  try{const r=await fetch(API,{cache:"no-store"});if(!r.ok)throw 0;const j=await r.json();render(Array.isArray(j.items)?j.items:[])}
+  catch(e){render([]);}
+}
+
+$("c").addEventListener("input",()=>{$("cnt").textContent=`${$("c").value.length}/240`});
+$("f").addEventListener("submit",async e=>{
+  e.preventDefault();const c=$("c").value.trim();
+  if(c.length<4){$("msg").textContent="Cümleni yaz, en az birkaç kelime.";$("c").focus();return}
+  $("send").disabled=true;$("msg").textContent="Gönderiliyor…";
+  const body=JSON.stringify({c,d:$("d").value.trim(),y:$("y").value.trim(),a:$("a").value.trim(),hp:$("hp").value});
+  try{await fetch(API,{method:"POST",mode:"no-cors",headers:{"Content-Type":"text/plain;charset=utf-8"},body});
+    $("f").hidden=true;$("done").classList.add("on");drawCard(c,$("d").value.trim(),$("y").value.trim());$("msg").textContent=""}
+  catch(err){$("msg").textContent="Gönderilemedi. İnternet bağlantını kontrol edip tekrar dene."}
+  finally{$("send").disabled=false}
+});
+$("again").onclick=()=>{$("done").classList.remove("on");$("f").hidden=false;$("f").reset();$("cnt").textContent="0/240";$("c").focus()};
+
+function wrap(g,t,max){const w=t.split(/\s+/),out=[];let l="";for(const x of w){const s=l?l+" "+x:x;if(g.measureText(s).width>max&&l){out.push(l);l=x}else l=s}if(l)out.push(l);return out}
+function drawCard(c,d,y){
+  const cv=$("card"),g=cv.getContext("2d"),W=1080,H=1920;
+  g.fillStyle="#fbfaf6";g.fillRect(0,0,W,H);
+  g.strokeStyle="#cfdcec";g.lineWidth=2;for(let yy=260;yy<H;yy+=72){g.beginPath();g.moveTo(0,yy);g.lineTo(W,yy);g.stroke()}
+  g.strokeStyle="rgba(231,131,140,.7)";g.lineWidth=4;g.beginPath();g.moveTo(130,0);g.lineTo(130,H);g.stroke();
+  g.fillStyle="#5a5f69";g.font="600 34px Archivo";g.fillText("ÖĞRETMENİMİN BANA SÖYLEDİĞİ O CÜMLE",170,190);
+  let fs=128,lines;do{g.font=`700 ${fs}px Caveat`;lines=wrap(g,"“"+strip(c)+"”",W-250);fs-=6}while(lines.length*fs*1.05>1000&&fs>50);
+  g.fillStyle="#1d2a5c";const lh=fs*1.08;let yy=Math.max(420,Math.round((H-lines.length*lh)/2-120));g.save();g.translate(170,0);g.rotate(-0.012);lines.forEach((l,i)=>g.fillText(l,0,yy+i*lh));g.restore();
+  yy+=lines.length*lh+40;const meta=[d&&`${d} öğretmenim`,y].filter(Boolean).join(" · ");
+  if(meta){g.fillStyle="#c4313f";g.font="700 64px Caveat";g.fillText("— "+meta,170,yy)}
+  g.fillStyle="#141a2e";g.font="800 52px Archivo";g.fillText("Seninki neydi?",170,H-230);
+  g.fillStyle="#5a5f69";g.font="600 34px Archivo";g.fillText(SITE,170,H-165);
+}
+const blob=()=>new Promise(r=>$("card").toBlob(r,"image/png"));
+$("save").onclick=async()=>{const b=await blob();const a=document.createElement("a");a.href=URL.createObjectURL(b);a.download="o-cumle.png";document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),4000)};
+$("share").onclick=async()=>{try{const b=await blob();const f=new File([b],"o-cumle.png",{type:"image/png"});
+  if(navigator.canShare&&navigator.canShare({files:[f]})){await navigator.share({files:[f],text:`Öğretmenimin bana söylediği o cümle. Seninki neydi? https://${SITE}/`});return}}catch(e){if(e&&e.name==="AbortError")return}
+  $("save").click()};
+(function(){const t=new Date(),d=new Date(2026,10,24),n=Math.ceil((d-new Date(t.getFullYear(),t.getMonth(),t.getDate()))/864e5);$("cd").innerHTML=n>0?`<b>${n} gün</b> kaldı`:n===0?"<b>Bugün</b>":""})();
+document.fonts&&document.fonts.load("700 60px Caveat").catch(()=>{});
+load();setInterval(load,60000);
+</script>
+</body>
+</html>
