@@ -138,6 +138,7 @@ footer{margin-top:40px;padding-left:56px;font-size:13px;color:var(--pencil)}
   <footer>Cümleler yayına girmeden önce tek tek okunur. Kişisel bilgi, isim ya da kırıcı ifade içeren cümleler yayınlanmaz.</footer>
 </div>
 
+<script src="filtre.js"></script>
 <script>
 const API="https://script.google.com/macros/s/AKfycbwHnpafOwXKEsBaEQYmw-VnT4jmJXFeOzU0jYqUNGhLXa9N3mMP-oN98eo4JBHzlRo/exec";
 const SITE="kadirozen23.github.io/kampanya/o-cumle";
@@ -166,6 +167,7 @@ $("c").addEventListener("input",()=>{$("cnt").textContent=`${$("c").value.length
 $("f").addEventListener("submit",async e=>{
   e.preventDefault();const c=$("c").value.trim();
   if(c.length<4){$("msg").textContent="Cümleni yaz, en az birkaç kelime.";$("c").focus();return}
+  if([c,$("d").value,$("a").value].some(uygunsuzMu)){$("msg").textContent="Bu yazıda uygun olmayan bir ifade, bağlantı ya da telefon numarası var. Lütfen değiştirip tekrar dene.";$("c").focus();return}
   $("send").disabled=true;$("msg").textContent="Gönderiliyor…";
   const body=JSON.stringify({c,d:$("d").value.trim(),y:$("y").value.trim(),a:$("a").value.trim(),hp:$("hp").value});
   try{await fetch(API,{method:"POST",mode:"no-cors",headers:{"Content-Type":"text/plain;charset=utf-8"},body});
