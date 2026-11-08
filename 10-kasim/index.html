@@ -62,8 +62,8 @@ h1 i{font-weight:400}
 .life .ends .end{color:var(--red)}
 
 .list{margin-top:34px;border-top:1px solid var(--line)}
-.row{display:grid;grid-template-columns:64px 74px minmax(0,1fr);gap:14px;padding:14px 0;border-bottom:1px solid var(--line);align-items:baseline;transition:background .3s}
-.row .a{font:500 28px/1 var(--serif);font-variant-numeric:lining-nums tabular-nums}
+.row{display:grid;grid-template-columns:76px 96px minmax(0,1fr);gap:14px;padding:14px 0;border-bottom:1px solid var(--line);align-items:baseline;transition:background .3s}
+.row .a{font:500 26px/1 var(--serif);white-space:nowrap;font-variant-numeric:lining-nums tabular-nums}
 .row .y{font:500 13px var(--sans);color:var(--ash);letter-spacing:.08em}
 .row .t{min-width:0}
 .row.cur{background:rgba(233,228,218,.06)}
@@ -126,7 +126,7 @@ h1 i{font-weight:400}
 
   <div class="list" id="list"></div>
 
-  <p class="src">Yaşlar doğum yılı 1881 esas alınarak verilmiştir; tam doğum günü bilinmediği için bir yaş fark olabilir. Tarihler: <a href="https://halic.edu.tr/en/research/application-and-research-centers/ataturk-principles-and-history-of-turkish-revolution-application-and-research-center/about-ataturk/ataturk-chronology" target="_blank" rel="noopener">Haliç Üniversitesi Atatürk İlkeleri ve İnkılap Tarihi Merkezi kronolojisi</a>. Bu sayfada alıntı söz yer almaz; yalnız olaylar ve tarihler vardır.</p>
+  <p class="src">Yaşlar doğum yılı 1881 esas alınarak verilmiştir; tam doğum günü bilinmediği için bir yaş fark olabilir. * işaretli yılların kesin tarihi kaynaklarda yoktur, yaklaşıktır. Tarihler: <a href="https://halic.edu.tr/en/research/application-and-research-centers/ataturk-principles-and-history-of-turkish-revolution-application-and-research-center/about-ataturk/ataturk-chronology" target="_blank" rel="noopener">Haliç Üniversitesi Atatürk İlkeleri ve İnkılap Tarihi Merkezi kronolojisi</a>, <a href="https://meb.gov.tr/ataturk/Hayati/CocuklukYillari" target="_blank" rel="noopener">MEB Atatürk'ün Çocukluk Yılları</a>. Bu sayfada alıntı söz yer almaz; yalnız olaylar ve tarihler vardır.</p>
 </div>
 
 <div id="silence" hidden role="dialog" aria-modal="true" aria-label="Saygı duruşu">
@@ -142,34 +142,64 @@ h1 i{font-weight:400}
 const SITE="kadirozen23.github.io/kampanya/10-kasim";
 const API="https://script.google.com/macros/s/AKfycbwHnpafOwXKEsBaEQYmw-VnT4jmJXFeOzU0jYqUNGhLXa9N3mMP-oN98eo4JBHzlRo/exec";
 const BORN=1881, DIED=1938;
-// [yıl, olay] — kaynak: Haliç Üniv. Atatürk İlkeleri ve İnkılap Tarihi Merkezi kronolojisi; 5 Aralık 1934 kadın hakları TBMM kararı
+// [yıl, olay, yaklaşık?] — kaynaklar: Haliç Üniv. Atatürk İlkeleri ve İnkılap Tarihi Merkezi kronolojisi; MEB "Atatürk'ün Çocukluk Yılları"; 3 Nisan 1930 Belediye Kanunu (bianet)
 const EV=[
+ [1881,"Selanik'te doğdu. Annesi Zübeyde Hanım, babası Ali Rıza Efendi."],
+ [1882,"Selanik'te ailesinin yanında küçük bir çocuktu."],
+ [1883,"Selanik'te ailesinin yanında küçük bir çocuktu."],
+ [1884,"Selanik'te ailesinin yanında küçük bir çocuktu."],
+ [1885,"Selanik'te ailesinin yanında küçük bir çocuktu."],
+ [1886,"Selanik'te ailesinin yanında küçük bir çocuktu."],
+ [1887,"Önce Hafız Mehmet Efendi'nin mahalle mektebine, sonra babasının isteğiyle Şemsi Efendi Okulu'na başladı.",1],
+ [1888,"Babası Ali Rıza Efendi'yi kaybetti. Annesiyle dayısının Rapla çiftliğine gitti, okulu bir süre yarım kaldı."],
+ [1889,"Selanik'e döndü, halasının yanında kalarak okumayı sürdürdü.",1],
+ [1890,"Selanik'te okumayı sürdürüyordu.",1],
+ [1891,"Selanik'te okumayı sürdürüyordu.",1],
+ [1892,"Selanik'te okumayı sürdürüyordu.",1],
  [1893,"Askerî Rüştiye'ye girdi ve Kemal adını aldı."],
- [1895,"Manastır Askerî İdadisi'ne geçti."],
+ [1894,"Selanik Askerî Rüştiyesi'nde öğrenciydi."],
+ [1895,"Askerî Rüştiye'yi bitirip Manastır Askerî İdadisi'ne geçti."],
+ [1896,"Manastır Askerî İdadisi'nde öğrenciydi."],
+ [1897,"Manastır Askerî İdadisi'nde öğrenciydi."],
+ [1898,"Manastır Askerî İdadisi'nde öğrenciydi."],
  [1899,"İstanbul'da Harbiye'ye, Piyade Sınıfı'na girdi."],
+ [1900,"Harbiye'de öğrenciydi."],
+ [1901,"Harbiye'de öğrenciydi."],
  [1902,"Harp Akademisi'ne başladı, arkadaşlarıyla bir gazete çıkardı."],
+ [1903,"Harp Akademisi'nde öğrenciydi."],
+ [1904,"Harp Akademisi'nde öğrenciydi."],
  [1905,"Harp Akademisi'ni Kurmay Yüzbaşı olarak bitirip Şam'a atandı."],
- [1906,"Şam'da Vatan ve Hürriyet Cemiyeti'ni kurdu."],
+ [1906,"Şam'da Vatan ve Hürriyet Cemiyeti'ni kurdu; Kolağası oldu."],
+ [1907,"Selanik'e, 3. Ordu'ya atandı."],
  [1908,"Meşrutiyet'in ilanına giden çalışmalarda yer aldı."],
+ [1909,"31 Mart Olayı'nda Hareket Ordusu'nda kurmay subay olarak görev yaptı."],
+ [1910,"Fransa'daki Picardie askerî manevralarına katıldı."],
+ [1911,"İstanbul'da Genelkurmay'a atandı ve Binbaşı oldu."],
  [1912,"Trablusgarp Savaşı'nda Tobruk saldırısını yönetti."],
  [1913,"Sofya'ya Askerî Ataşe olarak atandı."],
+ [1914,"Yarbay oldu."],
  [1915,"Çanakkale'de Arıburnu ve Anafartalar'da düşmanı durdurdu."],
  [1916,"Tuğgeneral oldu; Bitlis ve Muş'u kurtardı."],
- [1918,"Halep'in kuzeyinde, bugünkü sınırlar boyunca düşman ilerleyişini durdurdu."],
+ [1917,"Ordunun ve ülkenin durumunu anlatan bir rapor yazdı; Ekim'de İstanbul'a döndü."],
+ [1918,"Halep'in kuzeyinde, bugünkü sınırlar boyunca düşman ilerleyişini durdurdu; Yıldırım Orduları Grubu Komutanı oldu."],
  [1919,"19 Mayıs'ta Samsun'a çıktı; Erzurum ve Sivas kongrelerini topladı."],
  [1920,"23 Nisan'da Ankara'da Türkiye Büyük Millet Meclisi'ni açtı."],
  [1921,"Sakarya Meydan Muharebesi'ni kazandı; Mareşal rütbesi ve Gazi unvanı verildi."],
  [1922,"Kocatepe'den Büyük Taarruz'u yönetti; saltanat kaldırıldı."],
  [1923,"Lozan Antlaşması imzalandı; 29 Ekim'de Cumhuriyet ilan edildi ve ilk Cumhurbaşkanı seçildi."],
- [1924,"Halifelik kaldırıldı, öğretim birleştirildi."],
- [1925,"Uluslararası takvim ve saat kabul edildi."],
+ [1924,"Halifelik kaldırıldı, öğretim birleştirildi; yeni Anayasa kabul edildi."],
+ [1925,"Aşar vergisi kaldırıldı; Şapka Kanunu çıktı; uluslararası takvim ve saat kabul edildi."],
  [1926,"Türk Medeni Kanunu kabul edildi."],
- [1927,"Büyük Nutuk'u okudu."],
+ [1927,"Büyük Nutuk'u okudu; ikinci kez Cumhurbaşkanı seçildi."],
  [1928,"Yeni Türk harflerini Sarayburnu'nda anlattı; Harf Devrimi yasalaştı."],
- [1931,"Türk Tarih Kurumu'nu kurdu."],
+ [1929,"Yeni harflerle okuma yazma öğretmek için Millet Mektepleri açıldı."],
+ [1930,"Kadınlara belediye seçimlerinde seçme ve seçilme hakkı tanındı; Merkez Bankası kuruldu."],
+ [1931,"Türk Tarih Kurumu'nu kurdu; üçüncü kez Cumhurbaşkanı seçildi."],
  [1932,"Türk Dil Kurumu'nu kurdu."],
  [1933,"Cumhuriyet'in 10. yıl nutkunu okudu."],
  [1934,"Meclis ona Atatürk soyadını verdi; kadınlara milletvekili seçme ve seçilme hakkı tanındı."],
+ [1935,"Dördüncü kez Cumhurbaşkanı seçildi."],
+ [1936,"Montrö Boğazlar Sözleşmesi imzalandı, Boğazlar yeniden Türkiye'nin denetimine geçti."],
  [1937,"Çiftliklerini Hazine'ye, taşınmazlarını Ankara Belediyesi'ne bağışladı."],
  [1938,"10 Kasım'da, saat 09:05'te Dolmabahçe'de hayata gözlerini yumdu."]
 ];
@@ -181,7 +211,6 @@ $("nth").textContent=(NOWY-DIED)+".";
 function pick(age){
   const exact=EV.find(e=>ageOf(e[0])===age);
   if(exact)return{e:exact,kind:"exact"};
-  if(age<ageOf(EV[0][0]))return{e:null,kind:"child"};
   if(age>57)return{e:null,kind:"beyond"};
   let best=EV[0];EV.forEach(e=>{if(e[0]===DIED)return;const d=Math.abs(ageOf(e[0])-age),bd=Math.abs(ageOf(best[0])-age);if(d<bd||(d===bd&&ageOf(e[0])<age))best=e});
   return{e:best,kind:"near"};
@@ -189,7 +218,7 @@ function pick(age){
 function render(){
   let age=parseInt($("age").value,10);if(!(age>=1))age=1;if(age>110)age=110;
   const p=pick(age);let lead,yr="",ev,more="";
-  if(p.kind==="exact"){lead=`O ${age} yaşındayken,`;yr=p.e[0];ev=p.e[1]}
+  if(p.kind==="exact"){lead=`O ${age} yaşındayken,`;yr=p.e[2]?`${p.e[0]} civarı`:p.e[0];ev=p.e[1]}
   else if(p.kind==="near"){lead=`Senin yaşına en yakın yıl: o ${ageOf(p.e[0])} yaşındayken,`;yr=p.e[0];ev=p.e[1]}
   else if(p.kind==="child"){lead=`O ${age} yaşındayken,`;yr=`${BORN+age}`;ev="Selanik'te bir çocuktu.";more=`12 yaşında Askerî Rüştiye'ye girecek ve Kemal adını alacaktı.`}
   else{lead=`Sen ${age} yaşındasın.`;ev="O, bu yaşı hiç göremedi.";more=`57 yaşında, 10 Kasım 1938'de 09:05'te aramızdan ayrıldı. Kurduğu Cumhuriyet bu yıl ${NOWY-1923} yaşında.`}
@@ -197,8 +226,10 @@ function render(){
   const evEl=$("ev");evEl.textContent=ev;evEl.style.animation="none";void evEl.offsetWidth;evEl.style.animation="";
   $("more").textContent=more;
   const pct=Math.min(100,age/57*100);$("fill").style.width=pct+"%";$("you").style.left=pct+"%";$("you").textContent=age>57?`SEN ${age}`:`SEN · ${age}`;
-  $("list").innerHTML=EV.map(e=>{const a=ageOf(e[0]);const cls=e[0]===DIED?"last":a===age?"cur":a<age?"past":"";
-    return `<div class="row ${cls}"><span class="a">${a}</span><span class="y">${e[0]}</span><span class="t">${e[1]}</span></div>`}).join("");
+  const groups=[];EV.forEach(e=>{const g=groups[groups.length-1];if(g&&g.t===e[1])g.to=e;else groups.push({from:e,to:e,t:e[1]})});
+  $("list").innerHTML=groups.map(gr=>{const a1=ageOf(gr.from[0]),a2=ageOf(gr.to[0]);const inR=age>=a1&&age<=a2;
+    const cls=gr.from[0]===DIED?"last":inR?"cur":a2<age?"past":"";const ages=a1===a2?a1:`${a1}–${a2}`;const yrs=a1===a2?gr.from[0]:`${gr.from[0]}–${gr.to[0]}`;
+    return `<div class="row ${cls}"><span class="a">${ages}</span><span class="y">${yrs}${gr.from[2]?"*":""}</span><span class="t">${gr.t}</span></div>`}).join("");
   current={age,p,lead,ev,yr,more};
 }
 let current=null;
