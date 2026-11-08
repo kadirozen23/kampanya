@@ -144,7 +144,7 @@ h1 i{font-weight:400}
 const SITE="kadirozen23.github.io/kampanya/10-kasim";
 const API="https://script.google.com/macros/s/AKfycbwHnpafOwXKEsBaEQYmw-VnT4jmJXFeOzU0jYqUNGhLXa9N3mMP-oN98eo4JBHzlRo/exec";
 const BORN=1881, DIED=1938;
-const BUT="Göremedi ama yaşayamadığı her yılı bize bıraktı.";
+const BUT=`Göremedi ama bıraktığı Cumhuriyet bu yıl ${new Date().getFullYear()-1923} yaşında.`;
 // [yıl, olay, yaklaşık?] — kaynaklar: Haliç Üniv. Atatürk İlkeleri ve İnkılap Tarihi Merkezi kronolojisi; MEB "Atatürk'ün Çocukluk Yılları"; 3 Nisan 1930 Belediye Kanunu (bianet)
 const EV=[
  [1881,"Selanik'te doğdu. Annesi Zübeyde Hanım, babası Ali Rıza Efendi."],
@@ -224,7 +224,7 @@ function render(){
   if(p.kind==="exact"){lead=`O ${age} yaşındayken,`;yr=p.e[2]?`${p.e[0]} civarı`:p.e[0];ev=p.e[1]}
   else if(p.kind==="near"){lead=`Senin yaşına en yakın yıl: o ${ageOf(p.e[0])} yaşındayken,`;yr=p.e[0];ev=p.e[1]}
   else if(p.kind==="child"){lead=`O ${age} yaşındayken,`;yr=`${BORN+age}`;ev="Selanik'te bir çocuktu.";more=`12 yaşında Askerî Rüştiye'ye girecek ve Kemal adını alacaktı.`}
-  else{lead=`Sen ${age} yaşındasın.`;ev="O, bu yaşı hiç göremedi.";more=`57 yaşında, 10 Kasım 1938'de 09:05'te aramızdan ayrıldı. Kurduğu Cumhuriyet bu yıl ${NOWY-1923} yaşında.`}
+  else{lead=`Sen ${age} yaşındasın.`;ev="O, bu yaşı hiç göremedi.";more=`57 yaşında, 10 Kasım 1938'de 09:05'te aramızdan ayrıldı.`}
   $("lead").textContent=lead;$("yr").textContent=yr;
   const evEl=$("ev");evEl.textContent=ev;evEl.style.animation="none";void evEl.offsetWidth;evEl.style.animation="";
   $("more").textContent=more;
