@@ -1,0 +1,253 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Kaç Hayata Dokundun?</title>
+<meta name="description" content="Öğretmenlik yıllarının özeti: kaç öğrenciye dokundun, kaç saat ders anlattın, kaç sınav kâğıdı okudun? 24 Kasım Öğretmenler Günü.">
+<meta property="og:title" content="Kaç hayata dokundun?">
+<meta property="og:description" content="Öğretmenlik yıllarının özetini çıkar, hikâyende paylaş. 24 Kasım Öğretmenler Günü.">
+<meta property="og:image" content="https://kadirozen23.github.io/kampanya/dokundun/og.jpg">
+<meta property="og:url" content="https://kadirozen23.github.io/kampanya/dokundun/">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#0f2a2e">
+<link rel="preload" href="../fonts/archivo.woff2" as="font" type="font/woff2" crossorigin>
+<style>
+@font-face{font-family:"Archivo";src:url(../fonts/archivo.woff2) format("woff2");font-weight:100 900;font-stretch:62% 125%;font-display:swap}
+@font-face{font-family:"Caveat";src:url(../fonts/caveat.woff2) format("woff2");font-weight:400 700;font-display:swap}
+/* Layout: a story player. Setup screen first, then full-bleed color-blocked slides with progress ticks; the last slide is the share card. Single deliberate dark look. */
+:root{
+  --board:#0f2a2e;      /* old green-black chalkboard */
+  --chalk:#f3f1e8;
+  --dust:#a9b8b3;
+  --tomato:#ef5a3c; --sun:#f5c542; --sea:#2f8f8a; --plum:#3b2a4d;
+  --ui:"Archivo",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --hand:"Caveat","Comic Sans MS",cursive;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;background:var(--board);color:var(--chalk);font:16px/1.5 var(--ui);-webkit-tap-highlight-color:transparent}
+button{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--sun);outline-offset:3px}
+
+/* setup */
+#setup{min-height:100%;padding-top:max(24px,env(safe-area-inset-top,0px));padding-bottom:max(32px,env(safe-area-inset-bottom,0px));
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:flex;align-items:center}
+.inner{max-width:560px;margin:0 auto;width:100%}
+.kicker{font:600 12px var(--ui);letter-spacing:.16em;text-transform:uppercase;color:var(--dust);display:flex;justify-content:space-between;gap:12px}
+.kicker b{color:var(--sun)}
+#setup h1{font:900 clamp(46px,12vw,92px)/.9 var(--ui);font-stretch:118%;letter-spacing:-.03em;margin:22px 0 14px;text-wrap:balance}
+#setup h1 em{font-style:normal;color:var(--sun)}
+#setup p.lede{color:var(--dust);margin:0 0 28px;font-size:18px;max-width:42ch}
+.q{margin-bottom:22px}
+.q .l{font:700 13px var(--ui);letter-spacing:.1em;text-transform:uppercase;color:var(--dust);margin-bottom:10px;display:flex;justify-content:space-between}
+.q .l output{color:var(--chalk);font-size:15px;letter-spacing:0}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chips button{border:1.5px solid rgba(243,241,232,.25);background:none;padding:10px 14px;border-radius:999px;font-weight:600;cursor:pointer;transition:background .2s,border-color .2s,color .2s}
+.chips button[aria-pressed="true"]{background:var(--chalk);color:var(--board);border-color:var(--chalk)}
+input[type=range]{width:100%;accent-color:var(--sun)}
+.yearbox{display:flex;align-items:center;gap:14px}
+.yearbox input[type=number]{width:120px;font:800 32px var(--ui);font-stretch:110%;background:none;border:0;border-bottom:2px solid var(--chalk);color:var(--chalk);padding:2px 0;-moz-appearance:textfield}
+.yearbox input::-webkit-outer-spin-button,.yearbox input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+.yearbox span{color:var(--dust)}
+.go{margin-top:10px;width:100%;border:0;border-radius:16px;background:var(--sun);color:#1c1500;font:800 19px var(--ui);padding:18px;cursor:pointer;transition:transform .2s}
+.go:hover{transform:translateY(-2px)}
+.small{margin-top:14px;font-size:13px;color:var(--dust)}
+.small a{color:var(--chalk)}
+
+/* player */
+#player{position:fixed;inset:0;display:none;overflow:hidden}
+#player.on{display:block}
+.ticks{position:absolute;left:0;right:0;top:0;z-index:5;display:flex;gap:4px;padding-top:max(12px,env(safe-area-inset-top,0px));padding-left:max(12px,env(safe-area-inset-left,0px));padding-right:max(12px,env(safe-area-inset-right,0px))}
+.ticks i{flex:1;height:3px;border-radius:2px;background:rgba(255,255,255,.3);overflow:hidden}
+.ticks i b{display:block;height:100%;width:0;background:#fff}
+.close{position:absolute;z-index:6;top:calc(max(12px,env(safe-area-inset-top,0px)) + 14px);right:max(12px,env(safe-area-inset-right,0px));background:rgba(0,0,0,.25);border:0;border-radius:50%;width:40px;height:40px;cursor:pointer;font-size:20px;line-height:40px}
+.slide{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;padding:90px max(24px,env(safe-area-inset-left,0px)) 60px;opacity:0;visibility:hidden;transition:opacity .45s,visibility 0s .45s}
+.slide.on{opacity:1;visibility:visible;transition:opacity .45s}
+.slide .wrapc{max-width:620px;margin:0 auto;width:100%}
+.slide .pre{font:700 clamp(20px,4.6vw,30px)/1.2 var(--ui);margin:0 0 12px;opacity:0;transform:translateY(14px);transition:all .6s .15s}
+.slide .num{font:900 clamp(72px,22vw,190px)/.88 var(--ui);font-stretch:125%;letter-spacing:-.04em;font-variant-numeric:tabular-nums;margin:0;opacity:0;transform:scale(.92);transition:all .7s .35s cubic-bezier(.2,.9,.2,1)}
+.slide .unit{font:800 clamp(26px,6vw,44px)/1.05 var(--ui);font-stretch:110%;margin:6px 0 18px;opacity:0;transition:opacity .6s .6s}
+.slide .post{font:400 clamp(17px,4vw,22px)/1.4 var(--ui);max-width:30ch;opacity:0;transform:translateY(10px);transition:all .6s .9s}
+.slide .hand{font:700 clamp(30px,7vw,46px)/1.1 var(--hand);margin-top:22px;opacity:0;transform:rotate(-2deg);transition:opacity .6s 1.3s}
+.slide.on .pre,.slide.on .num,.slide.on .unit,.slide.on .post,.slide.on .hand{opacity:1;transform:none}
+.slide.on .hand{transform:rotate(-2deg)}
+.s-tomato{background:var(--tomato);color:#1d0b06}
+.s-sun{background:var(--sun);color:#1c1500}
+.s-sea{background:var(--sea);color:#04201e}
+.s-plum{background:var(--plum);color:var(--chalk)}
+.s-board{background:var(--board);color:var(--chalk)}
+.deco{position:absolute;pointer-events:none;opacity:.14}
+.tap{position:absolute;top:0;bottom:0;z-index:4;width:35%;background:none;border:0;cursor:pointer}
+.tap.prev{left:0}.tap.next{right:0;width:65%}
+/* final */
+.final{justify-content:flex-start;overflow-y:auto}
+.final canvas{display:block;width:min(100%,360px);max-width:100%;height:auto;aspect-ratio:9/16;margin:8px auto 18px;border-radius:14px;box-shadow:0 20px 50px -20px rgba(0,0,0,.6)}
+.final .acts{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;position:relative;z-index:7}
+.final .acts button,.final .acts a{border:0;border-radius:12px;padding:13px 18px;font:700 15px var(--ui);cursor:pointer;text-decoration:none}
+.a1{background:var(--sun);color:#1c1500}.a2{background:none;border:1.5px solid var(--chalk)!important;color:var(--chalk)}.a3{background:#1f8f4e;color:#fff}
+.final .toast{text-align:center;min-height:1.4em;margin-top:10px;font-size:14px;color:var(--dust)}
+.final .note{text-align:center;font-size:12px;color:var(--dust);margin-top:14px}
+.final .again{display:block;margin:16px auto 0;background:none;border:0;color:var(--chalk);text-decoration:underline;cursor:pointer;position:relative;z-index:7}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<main id="setup">
+  <div class="inner">
+    <div class="kicker"><span>24 Kasım · Öğretmenler Günü</span><span id="cd"></span></div>
+    <h1>Kaç hayata <em>dokundun?</em></h1>
+    <p class="lede">Öğretmenlik yıllarının özetini çıkar. Üç soru, yirmi saniye.</p>
+
+    <div class="q">
+      <div class="l"><label for="start">Öğretmenliğe başladığın yıl</label></div>
+      <div class="yearbox"><input id="start" type="number" min="1960" max="2026" value="2004" inputmode="numeric"><span id="yearsTxt"></span></div>
+    </div>
+    <div class="q">
+      <div class="l"><span>Kademe</span></div>
+      <div class="chips" id="levels" role="group" aria-label="Kademe"></div>
+    </div>
+    <div class="q">
+      <div class="l"><label for="size">Ortalama sınıf mevcudu</label><output id="sizeOut"></output></div>
+      <input id="size" type="range" min="8" max="45" value="24">
+    </div>
+    <div class="q">
+      <div class="l"><label for="hours">Haftalık ders saati</label><output id="hoursOut"></output></div>
+      <input id="hours" type="range" min="10" max="40" value="30">
+    </div>
+    <button class="go" id="go" type="button">Özetimi göster</button>
+    <p class="small">Öğretmen değil misin? Bu sayfayı bir öğretmenine gönder, o da kendi özetini görsün. Rakamlar MEB ders yılı (36 hafta) ve ortalamalarla yapılan yaklaşık hesaptır.</p>
+  </div>
+</main>
+
+<section id="player" aria-roledescription="hikâye" aria-live="polite">
+  <div class="ticks" id="ticks"></div>
+  <button class="close" id="close" type="button" aria-label="Kapat">✕</button>
+  <div id="slides"></div>
+  <button class="tap prev" id="prev" type="button" aria-label="Önceki"></button>
+  <button class="tap next" id="next" type="button" aria-label="Sonraki"></button>
+</section>
+
+<script>
+const SITE="kadirozen23.github.io/kampanya/dokundun";
+const NOW=2026, WEEKS=36;
+// kademe varsayılanları: mevcut, haftalık saat, öğrencinin yaşı, model
+const LEVELS=[
+ {id:"oo",n:"Okul öncesi",size:16,hours:30,age:5},
+ {id:"ilk",n:"İlkokul (sınıf öğrt.)",size:24,hours:30,age:6},
+ {id:"orta",n:"Ortaokul",size:27,hours:21,age:10},
+ {id:"lise",n:"Lise",size:26,hours:21,age:14}
+];
+let lv=LEVELS[1];
+const $=id=>document.getElementById(id);
+const nf=n=>Math.round(n).toLocaleString("tr-TR");
+
+function calc(){
+  const start=Math.max(1960,Math.min(NOW,+$("start").value||NOW));
+  const years=Math.max(1,NOW-start);
+  const size=+$("size").value, hours=+$("hours").value;
+  const lessons=years*WEEKS*hours;                    // ders saati
+  let students,papers,paperWord;
+  if(lv.id==="oo"){students=years*size;papers=years*WEEKS*5*size;paperWord="etkinlik ve boyama sayfasına baktın"}
+  else if(lv.id==="ilk"){students=Math.ceil(years/4)*size;papers=years*WEEKS*3*size;paperWord="ödev defteri kontrol ettin"}
+  else{const sections=Math.max(1,Math.round(hours/4));students=years*sections*size/2;papers=years*sections*size*4;paperWord="sınav kâğıdı okudun"}
+  const quiet=lessons*3;                               // ders başına ~3 kez
+  const words=lessons*40*0.5*110;                      // 40 dk, yarısı konuşma, dk'da 110 kelime
+  const novels=words/200000;                           // ~200 bin kelimelik roman
+  const firstAge=NOW-start+lv.age;
+  return {start,years,size,hours,lessons,students,papers,paperWord,quiet,novels,firstAge};
+}
+
+function slides(d){
+  return [
+   {c:"s-board",pre:`${d.start}'ten bu yana`,num:nf(d.years),unit:"yıl",post:"Her eylülde yeni bir yoklama listesi, yeni isimler, yeni yüzler.",hand:"Az değil."},
+   {c:"s-tomato",pre:"Bu yıllarda",num:nf(d.students),unit:"öğrenciye dokundun",post:"Her biri bir aile, bir ev, bir gelecek.",hand:"Yaklaşık. Belki daha fazla."},
+   {c:"s-sun",pre:"Kara tahtanın önünde",num:nf(d.lessons),unit:"saat ders anlattın",post:`Bu, aralıksız ${nf(d.lessons/24)} gün demek.`},
+   {c:"s-sea",pre:"Masanda, evde, hafta sonunda",num:nf(d.papers),unit:d.paperWord,post:"Kırmızı kalemin bu yüzden hep bitiyordu."},
+   {c:"s-plum",pre:"Tahminimize göre",num:nf(d.quiet),unit:"kez “sessiz olun” dedin",post:"Bunu ölçemedik, ama gerçek sayının daha fazla olduğuna eminiz.",hand:"Haklıydın."},
+   {c:"s-tomato",pre:"Anlattıkların yazıya dökülse",num:nf(Math.max(1,d.novels)),unit:"roman ederdi",post:"Ders başına yarım saat konuşma, dakikada 110 kelimeyle hesapladık."},
+   {c:"s-board",pre:"İlk öğrencilerin bugün",num:nf(d.firstAge),unit:"yaşında",post:"Bazıları belki şimdi kendi sınıfının önünde duruyor.",hand:"Senin sayende."},
+   {final:true}
+  ];
+}
+
+let idx=0,timer=null,data=null,cur=[];
+const DUR=5200;
+function build(){
+  data=calc();cur=slides(data);
+  $("slides").innerHTML="";$("ticks").innerHTML="";
+  cur.forEach((s,i)=>{
+    $("ticks").insertAdjacentHTML("beforeend","<i><b></b></i>");
+    const el=document.createElement("div");
+    if(s.final){el.className="slide s-board final";el.innerHTML=`<div class="wrapc"><canvas id="story" width="1080" height="1920" aria-label="Paylaşılabilir özet kartı"></canvas>
+      <div class="acts"><button class="a1" id="share" type="button">Hikâyende paylaş</button><button class="a2" id="save" type="button">Görseli kaydet</button><a class="a3" id="wa" target="_blank" rel="noopener">WhatsApp</a></div>
+      <div class="toast" id="toast" aria-live="polite"></div>
+      <p class="note">Yaklaşık hesap · MEB ders yılı 36 hafta · ${SITE}</p>
+      <button class="again" id="again" type="button">Yeniden hesapla</button></div>`}
+    else{el.className="slide "+s.c;el.innerHTML=`<div class="wrapc"><p class="pre">${s.pre}</p><p class="num">${s.num}</p><p class="unit">${s.unit}</p><p class="post">${s.post}</p>${s.hand?`<p class="hand">${s.hand}</p>`:""}</div>`;deco(el,i)}
+    $("slides").appendChild(el);
+  });
+  drawStory();
+  $("share").onclick=share;$("save").onclick=save;$("again").onclick=closePlayer;
+  $("wa").href="https://wa.me/?text="+encodeURIComponent(`Öğretmenlik yıllarımın özeti: ${nf(data.years)} yıl, ${nf(data.students)} öğrenci, ${nf(data.lessons)} saat ders 🍎 Seninkini çıkar: https://${SITE}/`);
+}
+function deco(el,i){ // chalk scribbles: one simple canvas per slide
+  const c=document.createElement("canvas");c.className="deco";c.width=600;c.height=600;c.style.width="70vmin";c.style.height="70vmin";
+  c.style.right="-12vmin";c.style.bottom="-12vmin";const g=c.getContext("2d");g.strokeStyle="#fff";g.lineWidth=6;g.lineCap="round";
+  let s=i*99+7;const r=()=>(s=(s*9301+49297)%233280)/233280;
+  for(let k=0;k<5;k++){g.beginPath();const cx=150+r()*300,cy=150+r()*300,R=60+r()*160;for(let t=0;t<Math.PI*2.1;t+=.08){const rr=R+8*Math.sin(t*5+k);const x=cx+rr*Math.cos(t),y=cy+rr*Math.sin(t);t?g.lineTo(x,y):g.moveTo(x,y)}g.stroke()}
+  el.appendChild(c);
+}
+function show(i){
+  idx=Math.max(0,Math.min(cur.length-1,i));
+  [...$("slides").children].forEach((el,k)=>el.classList.toggle("on",k===idx));
+  [...$("ticks").children].forEach((t,k)=>{const b=t.firstChild;b.style.transition="none";b.style.width=k<idx?"100%":"0";});
+  clearTimeout(timer);
+  const isFinal=cur[idx].final;$("next").hidden=isFinal;$("prev").style.width=isFinal?"0":"";
+  if(!isFinal){const b=$("ticks").children[idx].firstChild;requestAnimationFrame(()=>{b.style.transition=`width ${DUR}ms linear`;b.style.width="100%"});timer=setTimeout(()=>show(idx+1),DUR)}
+  else $("ticks").children[idx].firstChild.style.width="100%";
+}
+async function openPlayer(){await fontsReady;build();$("setup").hidden=true;$("player").classList.add("on");show(0);$("next").focus({preventScroll:true})}
+function closePlayer(){clearTimeout(timer);$("player").classList.remove("on");$("setup").hidden=false}
+$("go").onclick=openPlayer;$("close").onclick=closePlayer;
+$("next").onclick=()=>show(idx+1);$("prev").onclick=()=>show(idx-1);
+document.addEventListener("keydown",e=>{if(!$("player").classList.contains("on"))return;if(e.key==="ArrowRight")show(idx+1);if(e.key==="ArrowLeft")show(idx-1);if(e.key==="Escape")closePlayer()});
+
+// story card 1080x1920
+function drawStory(){
+  const cv=$("story"),g=cv.getContext("2d"),W=1080,H=1920,d=data;
+  g.fillStyle="#0f2a2e";g.fillRect(0,0,W,H);
+  const bands=[["#ef5a3c",nf(d.students),"öğrenciye dokundum"],["#f5c542",nf(d.lessons),"saat ders anlattım"],["#2f8f8a",nf(d.papers),d.paperWord.replace("baktın","baktım").replace("ettin","ettim").replace("okudun","okudum")]];
+  g.fillStyle="#a9b8b3";g.font="600 34px Archivo";g.fillText("24 KASIM · ÖĞRETMENLER GÜNÜ",80,150);
+  g.fillStyle="#f3f1e8";g.font="900 120px Archivo";
+  g.fillText(`${nf(d.years)} yılda`,80,300);
+  let y=380;
+  bands.forEach(([c,n,t],i)=>{g.fillStyle=c;g.fillRect(0,y,W,330);
+    g.fillStyle=i===1?"#1c1500":i===0?"#1d0b06":"#04201e";
+    let fs=190;g.font=`900 ${fs}px Archivo`;while(g.measureText(n).width>W-160&&fs>80){fs-=8;g.font=`900 ${fs}px Archivo`}
+    g.fillText(n,80,y+200);g.font="800 46px Archivo";g.fillText(t,80,y+275);y+=330});
+  g.fillStyle="#f3f1e8";const hl=[`İlk öğrencilerim`,`bugün ${nf(d.firstAge)} yaşında.`];g.font="700 84px Caveat";hl.forEach((t,i)=>g.fillText(t,80,y+110+i*86));
+  g.fillStyle="#f5c542";g.font="800 44px Archivo";g.fillText("Kaç hayata dokundun?",80,H-210);
+  g.fillStyle="#a9b8b3";g.font="600 34px Archivo";g.fillText(SITE,80,H-150);
+}
+const toast=t=>{const e=$("toast");if(e)e.textContent=t};
+const blob=()=>new Promise(r=>$("story").toBlob(r,"image/png"));
+async function save(){const b=await blob();const a=document.createElement("a");a.href=URL.createObjectURL(b);a.download="ogretmenlik-ozetim.png";document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),4000);toast("Kaydedildi. Instagram hikâyene ekleyebilirsin.")}
+async function share(){try{const b=await blob();const f=new File([b],"ogretmenlik-ozetim.png",{type:"image/png"});
+  if(navigator.canShare&&navigator.canShare({files:[f]})){await navigator.share({files:[f],text:`Kaç hayata dokundun? https://${SITE}/`});return}}catch(e){if(e&&e.name==="AbortError")return}
+  save()}
+
+// setup controls
+LEVELS.forEach(L=>{const b=document.createElement("button");b.type="button";b.textContent=L.n;b.setAttribute("aria-pressed",L===lv);
+  b.onclick=()=>{lv=L;document.querySelectorAll("#levels button").forEach(x=>x.setAttribute("aria-pressed",x===b));$("size").value=L.size;$("hours").value=L.hours;sync()};$("levels").appendChild(b)});
+function sync(){$("sizeOut").textContent=$("size").value+" öğrenci";$("hoursOut").textContent=$("hours").value+" saat";
+  const y=NOW-(+$("start").value||NOW);$("yearsTxt").textContent=y>0?`${y} yıl önce`:"bu yıl"}
+["size","hours","start"].forEach(id=>$(id).addEventListener("input",sync));sync();
+(function(){const t=new Date(),d=new Date(2026,10,24),n=Math.ceil((d-new Date(t.getFullYear(),t.getMonth(),t.getDate()))/864e5);$("cd").innerHTML=n>0?`<b>${n} gün</b> kaldı`:n===0?"<b>Bugün</b>":""})();
+const fontsReady=document.fonts?Promise.all(["900 120px Archivo","700 84px Caveat"].map(f=>document.fonts.load(f))).catch(()=>{}):Promise.resolve();
+fontsReady.then(()=>{if(data)drawStory()});
+</script>
+</body>
+</html>
