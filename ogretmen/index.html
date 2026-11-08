@@ -67,14 +67,27 @@ label{display:flex;flex-direction:column;gap:6px;font:600 13px var(--ui);color:v
 input,textarea{font:400 17px var(--typed);color:var(--ink);background:var(--field);border:1.5px solid var(--rule);border-radius:8px;padding:11px 12px;width:100%}
 textarea{resize:vertical;min-height:84px;font-family:var(--hand);font-size:22px;line-height:1.25}
 .count{align-self:flex-end;font:500 12px var(--ui);color:var(--muted)}
-.grades{display:flex;flex-direction:column;border-top:1.5px solid var(--ink)}
-.grade{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--rule)}
-.grade .lbl{font:600 16px var(--ui)}
-.grade .lbl small{display:block;font:400 13px var(--ui);color:var(--muted)}
-.grade .seg{display:flex;gap:4px}
-.grade button{width:38px;height:38px;border-radius:8px;border:1.5px solid var(--rule);background:var(--field);font:700 16px var(--typed);color:var(--ink);cursor:pointer;transition:background .15s,border-color .15s,transform .15s}
-.grade button:hover{border-color:var(--ink)}
-.grade button[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:#fff;transform:translateY(-1px)}
+.hint{margin:-4px 0 4px;font-size:14px;color:var(--muted)}
+.virtues{display:flex;flex-wrap:wrap;gap:8px}
+.virtues button{position:relative;display:inline-flex;align-items:center;gap:8px;border:1.5px solid var(--rule);background:var(--field);color:var(--ink);font:600 15px var(--ui);padding:10px 14px 10px 12px;border-radius:999px;cursor:pointer;transition:border-color .2s,background .2s,transform .2s}
+.virtues button:hover{border-color:var(--ink)}
+.virtues button svg{width:18px;height:18px;flex:none;transition:transform .35s cubic-bezier(.3,1.6,.5,1)}
+.virtues button svg path{fill:none;stroke:var(--muted);stroke-width:2;transition:fill .2s,stroke .2s}
+.virtues button[aria-pressed="true"]{border-color:var(--red);background:#fff4f5}
+.virtues button[aria-pressed="true"] svg{transform:scale(1.15)}
+.virtues button[aria-pressed="true"] svg path{fill:var(--red);stroke:var(--red)}
+.virtues button.pop svg{animation:beat .5s cubic-bezier(.3,1.6,.5,1)}
+@keyframes beat{0%{transform:scale(.6)}50%{transform:scale(1.45)}100%{transform:scale(1.15)}}
+.virtues button small{font:500 12px var(--typed);color:var(--muted)}
+.virtues button[aria-pressed="true"] small{color:var(--red)}
+.heart-fx{position:fixed;pointer-events:none;z-index:50;width:22px;height:22px;margin:-11px 0 0 -11px;animation:fly 1.1s cubic-bezier(.2,.7,.3,1) forwards}
+.heart-fx path{fill:var(--red)}
+@keyframes fly{0%{opacity:0;transform:translate(0,0) scale(.4) rotate(0)}15%{opacity:1}100%{opacity:0;transform:translate(var(--dx),var(--dy)) scale(var(--s)) rotate(var(--r))}}
+.stage{isolation:isolate}
+.float{position:absolute;inset:-20px -10px 60px;pointer-events:none;z-index:-1;overflow:hidden}
+.float svg{position:absolute;bottom:-30px;width:var(--w);height:var(--w);opacity:0;animation:rise var(--t) linear var(--d) infinite}
+.float svg path{fill:var(--red)}
+@keyframes rise{0%{opacity:0;transform:translateY(0) rotate(0)}10%{opacity:.28}80%{opacity:.18}100%{opacity:0;transform:translateY(-110%) rotate(var(--r))}}
 .papers{display:flex;gap:10px}
 .papers button{width:44px;height:44px;border-radius:50%;border:2px solid var(--rule);cursor:pointer}
 .papers button[aria-pressed="true"]{border-color:var(--ink);box-shadow:0 0 0 3px var(--paper),0 0 0 5px var(--ink)}
@@ -90,6 +103,7 @@ footer{margin-top:48px;padding-top:16px;border-top:1px solid var(--rule);font-si
 
   <div class="bench">
     <div class="stage">
+      <div class="float" id="float" aria-hidden="true"></div>
       <canvas id="card" width="1080" height="1350" aria-label="Öğretmen karnesi önizlemesi"></canvas>
       <div class="actions">
         <button class="btn primary" id="share" type="button">Karneyi paylaş</button>
@@ -111,8 +125,9 @@ footer{margin-top:48px;padding-top:16px;border-top:1px solid var(--rule);font-si
       </fieldset>
 
       <fieldset>
-        <legend>Notları</legend>
-        <div class="grades" id="grades"></div>
+        <legend>Notları · hepsi 5, Pekiyi</legend>
+        <p class="hint">Öğretmeninde en sevdiğin özellikleri seç, her biri karneye 5 olarak yazılır. En fazla 5 tane.</p>
+        <div class="virtues" id="virtues" role="group" aria-label="Özellikler"></div>
       </fieldset>
 
       <fieldset>
@@ -135,21 +150,33 @@ footer{margin-top:48px;padding-top:16px;border-top:1px solid var(--rule);font-si
 
 <script>
 const SITE="kadirozen23.github.io/kampanya/ogretmen";
-const CATS=[["Sabır","Aynı soruyu kaçıncı kez sorsak da"],["Anlatım","En zor konuyu bile anlaşılır yaptı"],["Emek","Hafta sonu bile kâğıt okudu"],["Mizah","Sınıfı güldürmeyi bilirdi"],["Kalp","Bizi her şeyden önce insan olarak gördü"]];
-const WORD={5:"Pekiyi",4:"İyi",3:"Orta",2:"Geçer",1:"Geçmez"};
+const VIRTUES=["Sabır","Anlatım","Emek","Kalp","Mizah","Adalet","İlham","Güler yüz","Hoşgörü","Disiplin","Merak uyandırma","Bize inanma"];
+const HEART='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7.5-4.6-9.6-9.2C.9 8.4 3 4.5 6.7 4.5c2.1 0 3.6 1.2 5.3 3.2 1.7-2 3.2-3.2 5.3-3.2 3.7 0 5.8 3.9 4.3 7.3C19.5 16.4 12 21 12 21z"/></svg>';
 const PAPERS=[{id:"mavi",bg:"#e6eef5",line:"#6f93b8",band:"#2f5d8c"},{id:"yesil",bg:"#e8f1e6",line:"#79a27a",band:"#2f6b3d"},{id:"pembe",bg:"#f6e8ea",line:"#c48a95",band:"#9b3348"}];
-let st={grades:[5,5,5,5,5],paper:0};
+let st={picked:["Sabır","Anlatım","Emek","Kalp","Mizah"],paper:0,reveal:99};
 const $=id=>document.getElementById(id);
 
-// grade buttons
-CATS.forEach(([n,s],i)=>{
-  const r=document.createElement("div");r.className="grade";
-  r.innerHTML=`<div class="lbl">${n}<small>${s}</small></div><div class="seg" role="group" aria-label="${n} notu"></div>`;
-  const seg=r.querySelector(".seg");
-  [1,2,3,4,5].forEach(v=>{const b=document.createElement("button");b.type="button";b.textContent=v;b.setAttribute("aria-label",`${n}: ${v} (${WORD[v]})`);b.setAttribute("aria-pressed",st.grades[i]===v);
-    b.onclick=()=>{st.grades[i]=v;seg.querySelectorAll("button").forEach(x=>x.setAttribute("aria-pressed",x===b));draw()};seg.appendChild(b)});
-  $("grades").appendChild(r);
-});
+function burst(el,n=10){
+  if(matchMedia("(prefers-reduced-motion: reduce)").matches)return;
+  const r=el.getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+r.height/2;
+  for(let i=0;i<n;i++){const h=document.createElement("div");h.className="heart-fx";h.innerHTML=HEART;
+    const a=-Math.PI/2+(Math.random()-.5)*Math.PI*1.1,d=60+Math.random()*90;
+    h.style.left=cx+"px";h.style.top=cy+"px";h.style.setProperty("--dx",Math.cos(a)*d+"px");h.style.setProperty("--dy",Math.sin(a)*d+"px");
+    h.style.setProperty("--s",(.6+Math.random()*.8).toFixed(2));h.style.setProperty("--r",((Math.random()-.5)*60).toFixed(0)+"deg");
+    document.body.appendChild(h);setTimeout(()=>h.remove(),1200)}
+}
+function renderVirtues(){const box=$("virtues");box.innerHTML="";
+  VIRTUES.forEach(v=>{const b=document.createElement("button");b.type="button";const on=st.picked.includes(v);
+    b.setAttribute("aria-pressed",on);b.innerHTML=HEART+`<span>${v}</span>`+(on?"<small>5</small>":"");
+    b.onclick=()=>{const i=st.picked.indexOf(v);
+      if(i>=0){if(st.picked.length<=1){toast("En az bir özellik seçili kalmalı.");return}st.picked.splice(i,1);renderVirtues();draw();return}
+      if(st.picked.length>=5){toast("En fazla 5 özellik seçebilirsin. Önce birini kaldır.");return}
+      st.picked.push(v);toast("");renderVirtues();draw();const nb=[...$("virtues").children].find(x=>x.textContent.startsWith(v));if(nb){nb.classList.add("pop");burst(nb)}};
+    box.appendChild(b)});
+}
+(function floaters(){const f=$("float");for(let i=0;i<9;i++){const d=document.createElement("div");d.innerHTML=HEART;const s=d.firstChild;
+  s.style.left=(5+Math.random()*90)+"%";s.style.setProperty("--w",(14+Math.random()*22)+"px");s.style.setProperty("--t",(9+Math.random()*7)+"s");
+  s.style.setProperty("--d",(-Math.random()*12)+"s");s.style.setProperty("--r",((Math.random()-.5)*80)+"deg");f.appendChild(s)}})();
 PAPERS.forEach((p,i)=>{const b=document.createElement("button");b.type="button";b.style.background=p.bg;b.setAttribute("aria-label",`Karne rengi ${p.id}`);b.setAttribute("aria-pressed",i===0);
   b.onclick=()=>{st.paper=i;document.querySelectorAll("#papers button").forEach((x,j)=>x.setAttribute("aria-pressed",j===i));draw()};$("papers").appendChild(b)});
 
@@ -172,6 +199,8 @@ function guilloche(p){
     g.beginPath();for(let x=0;x<=W;x+=4){const y=H-34-k*3+6*Math.sin(x/22+k);x?g.lineTo(x,y):g.moveTo(x,y)}g.stroke()}
   g.restore();
 }
+function heart(x,y,r,c){g.save();g.fillStyle=c;g.beginPath();g.moveTo(x,y+r*.9);
+  g.bezierCurveTo(x-r*1.6,y-r*.1,x-r*.9,y-r*1.3,x,y-r*.45);g.bezierCurveTo(x+r*.9,y-r*1.3,x+r*1.6,y-r*.1,x,y+r*.9);g.fill();g.restore()}
 function draw(){
   const p=PAPERS[st.paper],INK="#16213a",RED="#d2283a";
   g.fillStyle=p.bg;g.fillRect(0,0,W,H);guilloche(p);
@@ -192,21 +221,21 @@ function draw(){
   g.fillStyle=p.band;g.fillRect(L,y,R-L,48);g.fillStyle="#fff";g.font="700 20px Archivo";
   g.fillText("DAVRANIŞ",L+18,y+31);g.fillText("NOTU",cols[1]+18,y+31);g.fillText("DERECESİ",cols[2]+18,y+31);
   y+=48;
-  CATS.forEach(([n],i)=>{const v=st.grades[i];g.fillStyle=i%2?"rgba(255,255,255,.35)":"rgba(255,255,255,.6)";g.fillRect(L,y,R-L,56);
-    g.fillStyle=INK;g.font="600 26px Archivo";g.fillText(n,L+18,y+37);
-    g.font="700 32px 'Courier Prime'";g.fillStyle=v<3?RED:INK;g.fillText(String(v),cols[1]+30,y+38);
-    g.font="700 26px 'Courier Prime'";g.fillText(WORD[v],cols[2]+18,y+37);y+=56});
-  g.strokeStyle=p.band;g.lineWidth=2;g.strokeRect(L,y-56*5-48,R-L,56*5+48);
-  [cols[1],cols[2]].forEach(x=>{g.beginPath();g.moveTo(x,y-56*5-48);g.lineTo(x,y);g.stroke()});
-  // average
-  const avg=st.grades.reduce((a,b)=>a+b,0)/5;y+=46;
-  g.fillStyle=INK;g.font="600 22px Archivo";g.fillText("ORTALAMA",L,y);
-  g.font="700 44px 'Courier Prime'";g.fillText(avg.toFixed(2).replace(".",","),L+150,y+6);
-  // stamp
-  const award=avg>=4.5?"TAKDİR":avg>=3.5?"TEŞEKKÜR":null;
-  if(award){g.save();g.translate(R-160,y+10);g.rotate(-.16);g.strokeStyle=RED;g.fillStyle=RED;g.globalAlpha=.86;
+  const rows=st.picked,RH=56,n=rows.length;
+  rows.forEach((name,i)=>{g.fillStyle=i%2?"rgba(255,255,255,.35)":"rgba(255,255,255,.6)";g.fillRect(L,y,R-L,RH);
+    g.fillStyle=INK;g.font="600 26px Archivo";g.fillText(name,L+18,y+37);
+    if(i<st.reveal){g.font="700 32px 'Courier Prime'";g.fillText("5",cols[1]+30,y+38);
+      g.font="700 26px 'Courier Prime'";g.fillText("Pekiyi",cols[2]+18,y+37);heart(R-44,y+28,13,RED)}
+    y+=RH});
+  g.strokeStyle=p.band;g.lineWidth=2;g.strokeRect(L,y-RH*n-48,R-L,RH*n+48);
+  [cols[1],cols[2]].forEach(x=>{g.beginPath();g.moveTo(x,y-RH*n-48);g.lineTo(x,y);g.stroke()});
+  y+=46;
+  if(st.reveal>=n){g.fillStyle=INK;g.font="600 22px Archivo";g.fillText("ORTALAMA",L,y);
+    g.font="700 44px 'Courier Prime'";g.fillText("5,00",L+150,y+6);
+    g.save();g.translate(R-160,y+10);g.rotate(-.16);g.strokeStyle=RED;g.fillStyle=RED;g.globalAlpha=.86;
     g.lineWidth=5;g.beginPath();g.ellipse(0,0,140,62,0,0,Math.PI*2);g.stroke();g.lineWidth=2;g.beginPath();g.ellipse(0,0,128,52,0,0,Math.PI*2);g.stroke();
-    g.textAlign="center";g.font="800 40px Archivo";g.fillText(award,0,6);g.font="700 18px Archivo";g.fillText("BELGESİ",0,32);g.restore()}
+    g.textAlign="center";g.font="800 40px Archivo";g.fillText("TAKDİR",0,6);g.font="700 18px Archivo";g.fillText("BELGESİ",0,32);g.restore()}
+  y+=(5-n)*RH*0.5;
   // message
   y+=60;g.fillStyle="rgba(255,255,255,.55)";g.fillRect(L,y,R-L,250);g.strokeStyle=p.line;g.lineWidth=1.5;g.strokeRect(L,y,R-L,250);
   g.fillStyle=p.band;g.font="600 20px Archivo";g.fillText("ÖĞRENCİSİNİN NOTU",L+20,y+38);
@@ -218,7 +247,7 @@ function draw(){
   g.textAlign="center";g.fillStyle=p.band;g.font="600 20px Archivo";g.fillText(SITE,W/2,H-108);
   g.textAlign="left";
   $("msgCount").textContent=`${$("msg").value.length}/120`;
-  updateWA(avg,award);
+  updateWA();
 }
 function shareText(){const t=val("tName")||"öğretmenim";return `${t}, bu sefer karneyi ben verdim 📒 Öğretmenler Gününüz kutlu olsun!\n\nSen de öğretmenine karne ver: https://${SITE}/`}
 function updateWA(){$("wa").href="https://wa.me/?text="+encodeURIComponent(shareText())}
@@ -226,7 +255,7 @@ const toast=t=>{$("toast").textContent=t};
 function blob(){return new Promise(r=>cv.toBlob(r,"image/png"))}
 const fname=()=>`ogretmen-karnesi-${(val("tName")||"ogretmenim").toLowerCase().replace(/[^a-z0-9çğıöşü]+/g,"-")}.png`;
 $("save").onclick=async()=>{const b=await blob();const a=document.createElement("a");a.href=URL.createObjectURL(b);a.download=fname();document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),4000);toast("Görsel kaydedildi. WhatsApp'ta resim olarak gönderebilirsin.")};
-$("share").onclick=async()=>{
+$("share").onclick=async()=>{burst($("share"),14);
   try{const b=await blob();const file=new File([b],fname(),{type:"image/png"});
     if(navigator.canShare&&navigator.canShare({files:[file]})){await navigator.share({files:[file],text:shareText()});toast("Paylaşıldı.");return}
   }catch(e){if(e&&e.name==="AbortError")return}
@@ -235,7 +264,7 @@ $("share").onclick=async()=>{
 $("f").addEventListener("input",draw);$("f").addEventListener("submit",e=>e.preventDefault());
 function countdown(){const t=new Date(),d=new Date(2026,10,24),days=Math.ceil((d-new Date(t.getFullYear(),t.getMonth(),t.getDate()))/864e5);
   $("countdown").innerHTML=days>0?`<b>${days} gün</b> kaldı`:days===0?"<b>Bugün</b>":"Öğretmenlerimize teşekkürler"}
-countdown();draw();
+countdown();renderVirtues();draw();
 Promise.all(["800 64px Archivo","600 20px Archivo","700 32px 'Courier Prime'","700 44px Caveat"].map(f=>document.fonts.load(f))).then(draw).catch(draw);
 document.fonts.ready.then(draw);
 </script>
